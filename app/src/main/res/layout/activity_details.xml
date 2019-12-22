@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.Activities.Details">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_weight="1">
+
+                <com.daimajia.slider.library.Indicators.PagerIndicator
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/app_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:selected_color="#0095BF"
+                    app:unselected_color="#55333333"
+
+                    app:shape="rect"
+
+                    app:selected_padding_left="5dp"
+                    app:selected_padding_right="5dp"
+                    app:unselected_padding_left="5dp"
+                    app:unselected_padding_right="5dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    app:selected_width="6dp"
+                    app:selected_height="6dp"
+                    app:unselected_width="6dp"
+                    app:unselected_height="6dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintTop_toBottomOf="@+id/slider"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+
+                    />
+                <com.daimajia.slider.library.Indicators.PagerIndicator
+                    android:id="@+id/app_indicator2"
+                    style="@style/AndroidImageSlider_Corner_Oval_Orange"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintTop_toBottomOf="@+id/slider"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+
+                    />
+
+
+                <com.daimajia.slider.library.SliderLayout
+                    android:id="@+id/slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/text_grey"
+
+                    app:auto_cycle="true"
+                    app:indicator_visibility="visible"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:pager_animation="Accordion"
+
+
+                    app:pager_animation_span="1100"
+                    tools:layout_editor_absoluteX="0dp" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="15dp"
+
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/back_btn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+
+                    android:src="@drawable/ic_back"
+                    android:layout_marginLeft="0dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nb"
+                    android:text="100"
+                    android:fontFamily="@font/saudi"
+                    android:textSize="14dp"
+                    android:textColor="@color/bk_red"
+                    android:background="@drawable/ic_bk_nb"
+                    android:padding="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="0dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/header"
+    android:src="@drawable/ic_watch"
+    app:layout_constraintBottom_toTopOf="@+id/bottom"
+    android:id="@+id/watch_btn"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/header"
+               android:text="تم البيع"
+                android:layoutDirection="ltr"
+                android:textSize="14dp"
+                android:fontFamily="@font/saudi"
+                android:textColor="@color/bk_red"
+android:layout_marginRight="10dp"
+                android:id="@+id/solde_check"/>
+            <LinearLayout
+                android:paddingTop="10dp"
+                android:id="@+id/bottom"
+                app:layout_constraintTop_toBottomOf="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    >
+                    <LinearLayout
+                        android:id="@+id/top"
+                        android:gravity="top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:id="@+id/room_lay"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginRight="5dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="02"
+                                android:fontFamily="@font/saudi"
+                                android:textSize="14dp"
+                                android:id="@+id/room_nb"
+
+                                android:textColor="@color/text_grey"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="@string/room"
+                                android:fontFamily="@font/saudi"
+                                android:textSize="14dp"
+
+                                android:textColor="@color/text_grey"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginRight="10dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="."
+                                android:fontFamily="@font/saudi"
+                                android:textSize="30dp"
+
+                                android:textColor="@color/text_grey"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:id="@+id/bath_lay">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginRight="5dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="03"
+                                android:fontFamily="@font/saudi"
+                                android:textSize="14dp"
+                                android:id="@+id/bath_nb"
+                                android:textColor="@color/text_grey"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="@string/bath"
+                                android:fontFamily="@font/saudi"
+                                android:textSize="14dp"
+
+                                android:textColor="@color/text_grey"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="."
+                                android:fontFamily="@font/saudi"
+                                android:textSize="30dp"
+
+                                android:textColor="@color/text_grey"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:gravity="top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintRight_toRightOf="parent"
+                      app:layout_constraintTop_toBottomOf="@+id/top">
+                        <LinearLayout
+                            android:id="@+id/earth_lay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginRight="5dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="100"
+                                android:fontFamily="@font/saudi"
+                                android:textSize="14dp"
+                                android:id="@+id/earth_nb"
+
+                                android:textColor="@color/text_grey"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="@string/earth"
+                                android:fontFamily="@font/saudi"
+                                android:textSize="14dp"
+
+                                android:textColor="@color/text_grey"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginRight="10dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="."
+                                android:fontFamily="@font/saudi"
+                                android:textSize="30dp"
+
+                                android:textColor="@color/text_grey"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/bulding_lay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginRight="5dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="100"
+                                android:fontFamily="@font/saudi"
+                                android:textSize="14dp"
+                                android:id="@+id/bulding_nb"
+
+                                android:textColor="@color/text_grey"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="@string/bulding"
+                                android:fontFamily="@font/saudi"
+                                android:textSize="14dp"
+
+                                android:textColor="@color/text_grey"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:text="."
+                                android:fontFamily="@font/saudi"
+                                android:textSize="30dp"
+
+                                android:textColor="@color/text_grey"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:paddingTop="15dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:text="€4,999"
+                        android:fontFamily="@font/saudi"
+                        android:textSize="16dp"
+                        android:id="@+id/price"
+                        android:textColor="@color/bk_red"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:id="@+id/place"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:text="@string/place"
+                        android:fontFamily="@font/saudi"
+                        android:textSize="14dp"
+                        android:drawableLeft="@drawable/ic_location"
+                        android:textColor="@color/text_grey"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    >
+                    <fragment
+                        android:layout_marginTop="10dp"
+
+                        app:layout_constraintTop_toBottomOf="@+id/city"
+                        android:background="@drawable/bk_type_btn"
+                        android:padding="3dp"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+
+                        android:id="@+id/map"
+
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@id/map"
+                        android:id="@+id/zoom"
+
+                      android:paddingLeft="50dp"
+                        android:paddingRight="50dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginTop="10dp">
+                        <Button
+
+                            android:layout_marginRight="10dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:id="@+id/zomin"
+
+                            android:textColor="@color/bk_white"
+                            android:fontFamily="@font/saudi"
+                            android:textSize="14dp"
+                            android:background="@drawable/bk_type_btn2"
+                            android:drawableTop="@drawable/ic_plase"
+                            android:gravity="center"
+                            android:paddingTop="5dp"/>
+                        <Button
+
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:id="@+id/zomout"
+
+                            android:textColor="@color/bk_green"
+                            android:fontFamily="@font/saudi"
+                            android:textSize="14dp"
+                            android:background="@drawable/bk_type_btn"
+
+                            android:drawableTop="@drawable/ic_munis"
+                            android:gravity="center"
+                            android:paddingTop="5dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layoutDirection="rtl"
+                        app:layout_constraintTop_toBottomOf="@+id/zoom"
+                        android:paddingBottom="30dp"
+                        android:weightSum="2">
+                        <Button
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.95"
+                            android:background="@drawable/bk_email"
+                            android:layout_height="wrap_content"
+                            android:text="@string/email_contacte"
+                            android:textColor="@color/bk_white"
+                            android:fontFamily="@font/saudi"
+                            android:textSize="14dp"
+                            android:drawableRight="@drawable/ic_email"
+                            android:paddingRight="10dp"
+                            android:id="@+id/email_contacte"/>
+<View
+    android:layout_width="0dp"
+    android:layout_weight="0.05"
+    android:layout_height="wrap_content"
+    />
+                        <Button
+                            android:paddingRight="10dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.95"
+                            android:background="@drawable/bk_ferfy"
+                            android:layout_height="wrap_content"
+                            android:text="@string/whatup_contacte"
+                            android:textColor="@color/bk_green"
+                            android:fontFamily="@font/saudi"
+                            android:textSize="14dp"
+                            android:drawableRight="@drawable/ic_whatsapp"
+                            android:id="@+id/whatup_contacte"/>
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/is_solde"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:src="@drawable/sold"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

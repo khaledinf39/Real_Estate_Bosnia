@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "932590224036",
+    "firebase_url": "https://realestatebosnia-33785.firebaseio.com",
+    "project_id": "realestatebosnia-33785",
+    "storage_bucket": "realestatebosnia-33785.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932590224036:android:a05424761ae3d1b5711c31",
+        "android_client_info": {
+          "package_name": "com.kh_sof_dev.real_estate_bosnia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932590224036-8jvukkakf5ai9cgptkl6dv1r9tvnh4c9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kh_sof_dev.real_estate_bosnia",
+            "certificate_hash": "b2ea0853a82af272c3a80ce5013b22f6abd8fa9f"
+          }
+        },
+        {
+          "client_id": "932590224036-b87ld0uul3pcncksm4unf5t9ieoe88ek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe4aE0CVIL7HwQ6_jH4afmFG-w7J7OXo0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932590224036-b87ld0uul3pcncksm4unf5t9ieoe88ek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

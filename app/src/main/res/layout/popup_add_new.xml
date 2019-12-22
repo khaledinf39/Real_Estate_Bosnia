@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_width="50dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_height="5dp"
+        android:background="@color/text_grey"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"/>
+    <EditText
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:fontFamily="@font/saudi"
+        android:textSize="14dp"
+        android:textColor="@color/text_grey"
+        android:hint="كانتون توزلا"
+        android:id="@+id/name"
+        android:background="@drawable/bk_edite_bay"
+        />
+    <LinearLayout
+        android:background="#9AECEAEA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layoutDirection="rtl"
+        android:id="@+id/add">
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:fontFamily="@font/saudi"
+            android:textSize="16dp"
+            android:textColor="@color/bk_green"
+            android:text="@string/add_new"
+
+
+            />
+    </LinearLayout>
+</LinearLayout>

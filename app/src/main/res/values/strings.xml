@@ -1,0 +1,44 @@
+<resources>
+    <array name="places">
+        <item>صربيا</item>
+    </array>
+    <array name="places2">
+        <item>سلوفينيا</item>
+    </array>
+    <string name="app_name">عقارات البوسنه</string>
+    <string name="phone">رقم الهاتف</string>
+    <string name="ferefy_code">كود التحقق</string>
+    <string name="verfy">تحقق</string>
+    <string name="resend">إعاد الإرسال  (30 ثانية)</string>
+    <string name="send">إرسال كود التحقق</string>
+    <string name="place">المكان</string>
+    <string name="bath">الحمامات</string>
+    <string name="bulding">مساحة البناء</string>
+    <string name="room">غرف النوم</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="earth">مساحة الأرض</string>
+    <string name="type1">على النهر</string>
+    <string name="type2">مطلة</string>
+    <string name="price">السعر</string>
+    <string name="email_contacte">تواصل معنا عبرى الإيمايل</string>
+    <string name="whatup_contacte">تواصل معنا عبرى الواتساب</string>
+    <string name="appartment">شقة</string>
+    <string name="filla">فلة</string>
+    <string name="earth_check">أرض</string>
+    <string name="take_img">أضف صور ة</string>
+    <string name="youtup">إنسخ رابط اليوتيب هنا</string>
+    <string name="save">حفظ</string>
+    <string name="map">إختار الموقع من الخريطة</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="folow_us">تابعونا على</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="add_new">إضافة جديد</string>
+    <string name="um">البلدية</string>
+    <string name="governomont">المحافظة</string>
+    <string name="noItem">لا يوجد عناصر</string>
+    <string name="fiter">تطبيق الفلترة</string>
+    <string name="term">الموافقة على شروط اتفاقية المستخدم</string>
+    <string name="no_whatsapp">لست مثبت الواتساب على جوالك</string>
+</resources>

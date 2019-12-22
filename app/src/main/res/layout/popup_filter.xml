@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:id="@+id/type_lay"
+
+        >
+        <Button
+
+            android:layout_marginRight="10dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/type1"
+            android:text="@string/type1"
+            android:textColor="@color/bk_green"
+            android:fontFamily="@font/saudi"
+            android:textSize="14dp"
+            android:background="@drawable/bk_type_btn"/>
+        <Button
+
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/type2"
+            android:text="@string/type2"
+            android:textColor="@color/bk_green"
+            android:fontFamily="@font/saudi"
+            android:textSize="14dp"
+            android:background="@drawable/bk_type_btn"/>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:paddingBottom="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:gravity="right"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/earth_lay"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+
+                    android:fontFamily="@font/saudi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+
+                    android:text="@string/earth"
+                    android:textColor="@color/text_grey"
+                    android:textSize="14dp" />
+                <com.jaygoo.widget.RangeSeekBar
+                    app:rsb_max="2000"
+                    app:rsb_min="0"
+                    app:rsb_progress_color="@color/colorAccent"
+                    android:id="@+id/seek_bar_earth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    app:rsb_mode="range"
+                    app:rsb_progress_height="4dp"
+                    app:rsb_progress_default_color="@color/rsbColorSeekBarDefault"
+                    app:rsb_tick_mark_mode="number"
+                    app:rsb_thumb_size="15dp"
+                    app:rsb_indicator_drawable="@drawable/progress_hint_bg"
+                    app:rsb_indicator_padding_bottom="10dp"
+                    app:rsb_indicator_width="40dp"
+                    app:rsb_indicator_height="40dp"
+                    app:rsb_indicator_show_mode="showWhenTouch"
+                    app:rsb_thumb_drawable="@drawable/thumb_inactivated"
+                    app:rsb_thumb_inactivated_drawable="@drawable/thumb_activated"
+                    app:rsb_thumb_scale_ratio="1.3"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/earth_nb"
+                        android:text="00 m2"
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:textSize="14dp"
+                        android:layout_marginRight="30dp"/>
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/earth_nb2"
+                        android:text="00 m2"
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:textSize="14dp" />
+
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/price_lay"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+
+                    android:fontFamily="@font/saudi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+
+                    android:text="@string/price"
+                    android:textColor="@color/text_grey"
+                    android:textSize="14dp" />
+                <com.jaygoo.widget.RangeSeekBar
+                    app:rsb_max="2000"
+                    app:rsb_min="0"
+                    app:rsb_progress_color="@color/colorAccent"
+                    android:id="@+id/seek_bar_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    app:rsb_mode="range"
+                    app:rsb_progress_height="4dp"
+                    app:rsb_progress_default_color="@color/rsbColorSeekBarDefault"
+                    app:rsb_tick_mark_mode="number"
+                    app:rsb_thumb_size="15dp"
+                    app:rsb_indicator_drawable="@drawable/progress_hint_bg"
+                    app:rsb_indicator_padding_bottom="10dp"
+                    app:rsb_indicator_width="40dp"
+                    app:rsb_indicator_height="40dp"
+                    app:rsb_indicator_show_mode="showWhenTouch"
+                    app:rsb_thumb_drawable="@drawable/thumb_inactivated"
+                    app:rsb_thumb_inactivated_drawable="@drawable/thumb_activated"
+                    app:rsb_thumb_scale_ratio="1.3"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    >
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/price_nb"
+                        android:text="00 € "
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:layout_marginRight="30dp"
+                        android:textSize="14dp" />
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/price_nb2"
+
+                        android:text="00 € "
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:textSize="14dp" />
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bulding_lay"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+
+                    android:fontFamily="@font/saudi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+
+                    android:text="@string/bulding"
+                    android:textColor="@color/text_grey"
+                    android:textSize="14dp" />
+                <com.jaygoo.widget.RangeSeekBar
+                    app:rsb_max="2000"
+                    app:rsb_min="0"
+                    app:rsb_progress_color="@color/colorAccent"
+                    android:id="@+id/seek_bar_bulding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    app:rsb_mode="range"
+                    app:rsb_progress_height="4dp"
+                    app:rsb_progress_default_color="@color/rsbColorSeekBarDefault"
+                    app:rsb_tick_mark_mode="number"
+                    app:rsb_thumb_size="15dp"
+                    app:rsb_indicator_drawable="@drawable/progress_hint_bg"
+                    app:rsb_indicator_padding_bottom="10dp"
+                    app:rsb_indicator_width="40dp"
+                    app:rsb_indicator_height="40dp"
+                    app:rsb_indicator_show_mode="showWhenTouch"
+                    app:rsb_thumb_drawable="@drawable/thumb_inactivated"
+                    app:rsb_thumb_inactivated_drawable="@drawable/thumb_activated"
+                    app:rsb_thumb_scale_ratio="1.3"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/bulding_nb"
+                        android:text="00 m2"
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:textSize="14dp"
+                        android:layout_marginRight="30dp"/>
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/bulding_nb2"
+                        android:text="00 m2"
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:textSize="14dp" />
+
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/room_lay"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+
+                    android:fontFamily="@font/saudi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+
+                    android:text="@string/room"
+                    android:textColor="@color/text_grey"
+                    android:textSize="14dp" />
+                <com.jaygoo.widget.RangeSeekBar
+                    app:rsb_max="20"
+                    app:rsb_min="0"
+                    app:rsb_progress_color="@color/colorAccent"
+                    android:id="@+id/seek_bar_room"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    app:rsb_mode="range"
+                    app:rsb_progress_height="4dp"
+                    app:rsb_progress_default_color="@color/rsbColorSeekBarDefault"
+                    app:rsb_tick_mark_mode="number"
+                    app:rsb_thumb_size="15dp"
+                    app:rsb_indicator_drawable="@drawable/progress_hint_bg"
+                    app:rsb_indicator_padding_bottom="10dp"
+                    app:rsb_indicator_width="40dp"
+                    app:rsb_indicator_height="40dp"
+                    app:rsb_indicator_show_mode="showWhenTouch"
+                    app:rsb_thumb_drawable="@drawable/thumb_inactivated"
+                    app:rsb_thumb_inactivated_drawable="@drawable/thumb_activated"
+                    app:rsb_thumb_scale_ratio="1.3"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/room_nb"
+                        android:text="00 "
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:textSize="14dp"
+                        android:layout_marginRight="30dp"/>
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/room_nb2"
+                        android:text="00 "
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:textSize="14dp" />
+
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/bath_lay"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+
+                    android:fontFamily="@font/saudi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+
+                    android:text="@string/bath"
+                    android:textColor="@color/text_grey"
+                    android:textSize="14dp" />
+                <com.jaygoo.widget.RangeSeekBar
+                    app:rsb_max="20"
+                    app:rsb_min="0"
+                    app:rsb_progress_color="@color/colorAccent"
+                    android:id="@+id/seek_bar_bath"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    app:rsb_mode="range"
+                    app:rsb_progress_height="4dp"
+                    app:rsb_progress_default_color="@color/rsbColorSeekBarDefault"
+                    app:rsb_tick_mark_mode="number"
+                    app:rsb_thumb_size="15dp"
+                    app:rsb_indicator_drawable="@drawable/progress_hint_bg"
+                    app:rsb_indicator_padding_bottom="10dp"
+                    app:rsb_indicator_width="40dp"
+                    app:rsb_indicator_height="40dp"
+                    app:rsb_indicator_show_mode="showWhenTouch"
+                    app:rsb_thumb_drawable="@drawable/thumb_inactivated"
+                    app:rsb_thumb_inactivated_drawable="@drawable/thumb_activated"
+                    app:rsb_thumb_scale_ratio="1.3"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/bath_nb"
+                        android:text="00 "
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:textSize="14dp"
+                        android:layout_marginRight="30dp"/>
+                    <TextView
+                        android:background="@drawable/bk_tv"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/saudi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:id="@+id/bath_nb2"
+                        android:text="00 "
+                        android:textColor="@color/bk_red"
+                        android:paddingBottom="3dp"
+                        android:textSize="14dp" />
+
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+
+                android:layout_marginRight="10dp"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+
+                android:id="@+id/save"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center"
+                android:text="@string/fiter"
+                android:textColor="@color/bk_green"
+                android:fontFamily="@font/saudi"
+                android:textSize="14dp"
+                android:background="@drawable/bk_type_btn"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

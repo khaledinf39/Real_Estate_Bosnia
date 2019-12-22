@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_gravity="bottom"
+    android:layout_height="wrap_content"
+    android:background="#B0FFFFFF">
+<View
+    android:layout_width="50dp"
+    android:layout_height="3dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="10dp"
+    android:background="@color/bk_red"/>
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="150dp"
+        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:textColor="@color/bk_red"
+        android:fontFamily="@font/saudi"
+        android:textSize="14dp"
+        android:drawableRight="@drawable/ic_logout"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"/>
+    <RelativeLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <View
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@color/bk_red"/>
+        <TextView
+
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:text="@string/folow_us"
+            android:textColor="@color/bk_red"
+            android:fontFamily="@font/saudi"
+            android:textSize="14dp"
+
+            android:gravity="center"
+            android:background="#EDFFFFFF"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_marginBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/youtup"
+            android:src="@drawable/ic_youtup"/>
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/instagrame"
+            android:src="@drawable/ic_instagram"/>
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/twiter"
+            android:src="@drawable/ic_twiter"/>
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fb"
+            android:src="@drawable/fb"/>
+    </LinearLayout>
+</LinearLayout>
