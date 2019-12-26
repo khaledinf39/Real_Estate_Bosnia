@@ -43,7 +43,8 @@
 
         <activity android:name=".Activities.Activities.Add_new" />
         <activity android:name=".Activities.Activities.Details" />
-        <activity android:name=".Activities.Activities.MainActivity">
+        <activity android:name=".Activities.Activities.MainActivity"/>
+        <activity android:name=".Activities.Activities.Edite">
 
         </activity>
 <activity android:name=".Activities.Activities.Login_activity"/>

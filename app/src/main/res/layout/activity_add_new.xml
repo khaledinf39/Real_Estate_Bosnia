@@ -138,7 +138,7 @@
                    android:layout_weight="1"/>
            </RadioGroup>
            <LinearLayout
-               android:visibility="gone"
+               android:visibility="visible"
 
                android:id="@+id/info"
                android:layout_width="match_parent"
@@ -147,10 +147,12 @@
                app:layout_constraintTop_toBottomOf="@+id/RG"
                >
                <LinearLayout
+
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:weightSum="2"
-                   android:orientation="horizontal">
+                   android:orientation="horizontal"
+                   android:id="@+id/info1">
 
                    <LinearLayout
                        android:layout_width="0dp"
@@ -169,16 +171,22 @@
                            android:textSize="14dp" />
 
                        <LinearLayout
+                           android:layout_marginTop="10dp"
+
                            android:layout_width="match_parent"
                            android:layout_height="match_parent"
                            android:orientation="horizontal"
                            >
-                           <TextView
+                           <EditText
+                               android:background="@drawable/bk_btn_take_img"
+                               android:padding="5dp"
+                               android:layout_marginLeft="10dp"
                                android:gravity="center"
                                android:id="@+id/room_nb"
+                               android:inputType="number"
 
                                android:fontFamily="@font/saudi"
-                               android:layout_width="wrap_content"
+                               android:layout_width="match_parent"
                                android:layout_height="match_parent"
                                android:layout_gravity="end"
 
@@ -188,11 +196,11 @@
                                android:textSize="14dp" />
                            <SeekBar
                                android:max="12"
-
+android:visibility="gone"
                                android:id="@+id/seek_bar_room"
                                android:layout_width="match_parent"
                                android:layout_height="50dp"
-                               android:paddingLeft="0dp"
+                               android:paddingLeft="10dp"
                                android:paddingRight="0dp"/>
 
 
@@ -218,17 +226,24 @@
                            android:textSize="14dp" />
 
                        <LinearLayout
+                           android:layout_marginTop="10dp"
+
                            android:layout_width="match_parent"
                            android:layout_height="match_parent"
                            android:orientation="horizontal"
                            >
-                           <TextView
+                           <EditText
+                               android:background="@drawable/bk_btn_take_img"
+                               android:padding="5dp"
+                               android:layout_marginLeft="10dp"
                                android:gravity="center"
 android:id="@+id/bath_nb"
+
                                android:fontFamily="@font/saudi"
-                               android:layout_width="wrap_content"
-                               android:layout_height="match_parent"
-                               android:layout_gravity="end"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+
+                               android:inputType="number"
 
                                android:text="00"
                                android:textColor="@color/bk_red"
@@ -236,11 +251,11 @@ android:id="@+id/bath_nb"
                                android:textSize="14dp" />
                            <SeekBar
                                android:max="12"
-
+android:visibility="gone"
                                android:id="@+id/seek_bar_bath"
                                android:layout_width="match_parent"
                                android:layout_height="50dp"
-                               android:paddingLeft="0dp"
+                               android:paddingLeft="10dp"
                                android:paddingRight="0dp"/>
 
 
@@ -254,9 +269,12 @@ android:id="@+id/bath_nb"
                    android:layout_height="wrap_content"
                    android:weightSum="2"
                    android:gravity="right"
+                   android:layout_marginTop="10dp"
+
                    android:orientation="horizontal">
 
                    <LinearLayout
+                       android:id="@+id/earth_lay"
                        android:layout_width="0dp"
                        android:layout_weight="1"
                        android:layout_height="wrap_content"
@@ -273,18 +291,25 @@ android:id="@+id/bath_nb"
                            android:textSize="14dp" />
 
                        <LinearLayout
+                           android:layout_marginTop="10dp"
+
                            android:layout_width="match_parent"
-                           android:layout_height="match_parent"
+                           android:layout_height="wrap_content"
                            android:orientation="horizontal"
                            >
-                           <TextView
+                           <EditText
+                               android:background="@drawable/bk_btn_take_img"
+                               android:padding="5dp"
+                               android:layout_marginLeft="10dp"
                                android:gravity="center"
                                android:id="@+id/earth_nb"
+                               android:inputType="number"
 
                                android:fontFamily="@font/saudi"
-                               android:layout_width="wrap_content"
-                               android:layout_height="match_parent"
-                               android:layout_gravity="end"
+                               android:layout_width="0dp"
+                               android:layout_weight="1"
+                               android:layout_height="wrap_content"
+
 
                                android:text="00 "
                                android:textColor="@color/bk_red"
@@ -305,10 +330,11 @@ android:id="@+id/bath_nb"
                                android:paddingBottom="3dp"
                                android:textSize="14dp" />
                            <SeekBar
+                               android:visibility="gone"
                                android:id="@+id/seek_bar_earth"
                                android:layout_width="match_parent"
                                android:layout_height="50dp"
-                               android:paddingLeft="0dp"
+                               android:paddingLeft="10dp"
                                android:paddingRight="0dp"
                                android:max="1000"
                                />
@@ -319,6 +345,8 @@ android:id="@+id/bath_nb"
 
                    </LinearLayout>
                    <LinearLayout
+
+                       android:id="@+id/bulding_lay"
                        android:layout_width="0dp"
                        android:layout_weight="1"
                        android:layout_height="wrap_content"
@@ -335,18 +363,25 @@ android:id="@+id/bath_nb"
                            android:textSize="14dp" />
 
                        <LinearLayout
+                           android:layout_marginTop="10dp"
+
                            android:layout_width="match_parent"
-                           android:layout_height="match_parent"
+                           android:layout_height="wrap_content"
                            android:orientation="horizontal"
                            >
-                           <TextView
+                           <EditText
+                               android:inputType="number"
+                               android:background="@drawable/bk_btn_take_img"
+                               android:padding="5dp"
+                               android:layout_marginLeft="10dp"
                                android:gravity="center"
                                android:id="@+id/bulding_nb"
 
                                android:fontFamily="@font/saudi"
-                               android:layout_width="wrap_content"
-                               android:layout_height="match_parent"
-                               android:layout_gravity="end"
+                               android:layout_width="0dp"
+                               android:layout_weight="1"
+                               android:layout_height="wrap_content"
+
 
                                android:text="00"
                                android:textColor="@color/bk_red"
@@ -370,9 +405,9 @@ android:id="@+id/bath_nb"
                                android:id="@+id/seek_bar_bulding"
                                android:layout_width="match_parent"
                                android:layout_height="50dp"
-                               android:paddingLeft="0dp"
+                               android:paddingLeft="10dp"
                                android:max="1000"
-
+android:visibility="gone"
                                android:paddingRight="0dp"/>
 
 
@@ -387,6 +422,8 @@ android:id="@+id/bath_nb"
                    android:layout_width="match_parent"
                    android:layout_weight="1"
                    android:layout_height="wrap_content"
+                   android:layout_marginTop="10dp"
+
                    android:orientation="vertical">
                    <TextView
 
@@ -400,30 +437,90 @@ android:id="@+id/bath_nb"
                        android:textSize="14dp" />
 
                    <LinearLayout
+                       android:layout_marginTop="10dp"
+android:gravity="right"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
                        android:orientation="horizontal"
+                       android:weightSum="2.5"
                        >
+
+                       <EditText
+                           android:visibility="gone"
+
+                           android:background="@drawable/bk_btn_take_img"
+                           android:padding="5dp"
+                           android:layout_marginLeft="10dp"
+                           android:gravity="center"
+                           android:id="@+id/price_nb"
+                           android:inputType="number"
+
+                           android:fontFamily="@font/saudi"
+                           android:layout_width="0dp"
+                           android:layout_weight="1"
+                           android:layout_height="match_parent"
+                           android:layout_gravity="end"
+
+                           android:text="00"
+                           android:textColor="@color/bk_red"
+                           android:paddingBottom="3dp"
+                           android:textSize="14dp" />
                        <TextView
-                       android:gravity="center"
-                       android:id="@+id/price_nb"
+                           android:gravity="center"
 
-                       android:fontFamily="@font/saudi"
-                       android:layout_width="wrap_content"
-                       android:layout_height="match_parent"
-                       android:layout_gravity="end"
+                           android:visibility="gone"
+
+                           android:fontFamily="@font/saudi"
+                           android:layout_width="wrap_content"
+
+                           android:layout_height="match_parent"
+                           android:layout_gravity="end"
 
 
-                       android:text="00"
-                       android:textColor="@color/bk_red"
-                       android:paddingBottom="3dp"
-                       android:textSize="14dp" />
+                           android:text=" €"
+                           android:textColor="@color/bk_red"
+                           android:paddingBottom="3dp"
+                           android:textSize="14dp" />
+                       <TextView
+                           android:gravity="center"
+
+android:visibility="gone"
+                           android:fontFamily="@font/saudi"
+                           android:layout_width="0dp"
+                           android:layout_weight="0.5"
+                           android:layout_height="match_parent"
+                           android:layout_gravity="end"
+
+
+                           android:text=" الى"
+                           android:textColor="@color/bk_red"
+                           android:paddingBottom="3dp"
+                           android:textSize="14dp" />
+                       <EditText
+                           android:background="@drawable/bk_btn_take_img"
+                           android:padding="5dp"
+                           android:layout_marginLeft="10dp"
+                           android:gravity="center"
+                           android:id="@+id/price_nb1"
+                           android:inputType="number"
+
+                           android:fontFamily="@font/saudi"
+                           android:layout_width="0dp"
+                           android:layout_weight="1.5"
+                           android:layout_height="match_parent"
+                           android:layout_gravity="end"
+
+                           android:text="00"
+                           android:textColor="@color/bk_red"
+                           android:paddingBottom="3dp"
+                           android:textSize="14dp" />
                        <TextView
                            android:gravity="center"
 
 
                            android:fontFamily="@font/saudi"
                            android:layout_width="wrap_content"
+
                            android:layout_height="match_parent"
                            android:layout_gravity="end"
 
@@ -433,11 +530,12 @@ android:id="@+id/bath_nb"
                            android:paddingBottom="3dp"
                            android:textSize="14dp" />
                        <SeekBar
+                           android:visibility="gone"
                            android:max="1000"
                            android:id="@+id/seek_bar_price"
                            android:layout_width="match_parent"
                            android:layout_height="50dp"
-                           android:paddingLeft="0dp"
+                           android:paddingLeft="10dp"
                            android:paddingRight="0dp"/>
 
 
@@ -451,7 +549,7 @@ android:id="@+id/bath_nb"
                    android:layout_height="wrap_content"
                    android:orientation="horizontal"
                    android:gravity="right"
-
+android:layout_marginTop="15dp"
                    >
                    <Button
 
@@ -494,56 +592,156 @@ android:visibility="gone"
                android:drawableLeft="@drawable/sold"
                app:layout_constraintRight_toRightOf="parent"
                app:layout_constraintTop_toBottomOf="@+id/info"/>
-           <LinearLayout
-               android:id="@+id/imgs"
-               android:layout_marginTop="20dp"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="horizontal"
-               android:weightSum="3"
+          <HorizontalScrollView
+              android:id="@+id/imgs"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:layout_constraintTop_toBottomOf="@+id/is_solde">
+              <LinearLayout
 
-               app:layout_constraintTop_toBottomOf="@+id/is_solde">
+                  android:layout_marginTop="20dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:weightSum="10"
 
-               <Button
-                   android:layout_marginRight="3dp"
-                   android:layout_width="0dp"
-                   android:layout_weight="1"
-                   android:id="@+id/take_img1"
-                   android:layout_height="100dp"
-                   android:paddingBottom="20dp"
-                   android:background="@drawable/bk_btn_take_img"
-                   android:text="@string/take_img"
-                   android:fontFamily="@font/saudi"
-                   android:textSize="14dp"
-                   android:textColor="@color/text_grey"
-                   android:drawableBottom="@drawable/ic_camera"/>
-               <Button
-                   android:layout_marginRight="3dp"
-                   android:layout_width="0dp"
-                   android:layout_weight="1"
-                   android:id="@+id/take_img2"
-                   android:layout_height="100dp"
-                   android:paddingBottom="20dp"
-                   android:background="@drawable/bk_btn_take_img"
-                   android:text="@string/take_img"
-                   android:fontFamily="@font/saudi"
-                   android:textSize="14dp"
-                   android:textColor="@color/text_grey"
-                   android:drawableBottom="@drawable/ic_camera"/>
-               <Button
-                   android:layout_marginRight="3dp"
-                   android:layout_width="0dp"
-                   android:layout_weight="1"
-                   android:id="@+id/take_img3"
-                   android:layout_height="100dp"
-                   android:paddingBottom="20dp"
-                   android:background="@drawable/bk_btn_take_img"
-                   android:text="@string/take_img"
-                   android:fontFamily="@font/saudi"
-                   android:textSize="14dp"
-                   android:textColor="@color/text_grey"
-                   android:drawableBottom="@drawable/ic_camera"/>
-           </LinearLayout>
+                  app:layout_constraintTop_toBottomOf="@+id/is_solde">
+
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img1"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img2"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img3"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img4"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img5"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img6"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img7"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img8"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img9"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+                  <Button
+                      android:layout_marginRight="3dp"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/take_img10"
+                      android:layout_height="100dp"
+                      android:paddingBottom="20dp"
+                      android:background="@drawable/bk_btn_take_img"
+                      android:text="@string/take_img"
+                      android:fontFamily="@font/saudi"
+                      android:textSize="14dp"
+                      android:textColor="@color/text_grey"
+                      android:drawableBottom="@drawable/ic_camera"/>
+
+              </LinearLayout>
+          </HorizontalScrollView>
+
+
            <androidx.constraintlayout.widget.ConstraintLayout
                android:layout_marginTop="20dp"
                app:layout_constraintTop_toBottomOf="@+id/imgs"

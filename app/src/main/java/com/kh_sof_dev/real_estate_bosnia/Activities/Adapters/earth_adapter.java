@@ -54,6 +54,7 @@ public class earth_adapter extends RecyclerView.Adapter<earth_adapter.ViewHolder
         Log.d(TAG, "onBindViewHolder: called.");
         holder.id.setText(mItems.get(position).getNb()+"");
         holder.price.setText(mItems.get(position).getPrice().toString()+" €");
+        holder.price1.setText(mItems.get(position).getPrice1().toString()+" €");
 
         holder.earth.setText(mItems.get(position).getEarth()+" m2");
        holder.place.setText(mItems.get(position).getLocation().getCity()+"");
@@ -93,13 +94,14 @@ if (mItems.get(position).getEarth_type()==1){
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView id,price,earth,place;
+        TextView id,price,price1,earth,place;
 ImageView img,solde;
 Button type;
         public ViewHolder(View itemView) {
             super(itemView);
             id=itemView.findViewById(R.id.nb);
             price=itemView.findViewById(R.id.price_nb);
+            price1=itemView.findViewById(R.id.price_nb1);
             place=itemView.findViewById(R.id.place);
             earth=itemView.findViewById(R.id.earth_nb);
             img=itemView.findViewById(R.id.img);

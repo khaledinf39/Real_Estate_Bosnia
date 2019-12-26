@@ -41,4 +41,8 @@
     <string name="fiter">تطبيق الفلترة</string>
     <string name="term">الموافقة على شروط اتفاقية المستخدم</string>
     <string name="no_whatsapp">لست مثبت الواتساب على جوالك</string>
+    <string name="edite">تعديل</string>
+    <string name="delete">حذف</string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="address">العنوان</string>
 </resources>

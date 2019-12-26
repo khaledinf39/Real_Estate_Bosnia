@@ -6,9 +6,10 @@ import java.util.List;
 public class Real_estate {
     private int nb,room,bath;
     private String img1,img2,img3,youtup,uid,address,govkey,munkey;
-    private Double price=0.0,building,earth;
+    private Double price=0.0,price1=0.0,building,earth;
 private location location;
 private  int type=1,earth_type=1;
+private String Profider_phone,Profider_email,Profider_address;
 private Boolean Solde=false;
 private List<String> imagesURL=new ArrayList<>();
     public com.kh_sof_dev.real_estate_bosnia.Activities.Classes.location getLocation() {
@@ -21,6 +22,38 @@ private List<String> imagesURL=new ArrayList<>();
 
     public Real_estate() {
 
+    }
+
+    public Double getPrice1() {
+        return price1;
+    }
+
+    public void setPrice1(Double price1) {
+        this.price1 = price1;
+    }
+
+    public String getProfider_email() {
+        return Profider_email;
+    }
+
+    public void setProfider_email(String profider_email) {
+        Profider_email = profider_email;
+    }
+
+    public String getProfider_address() {
+        return Profider_address;
+    }
+
+    public void setProfider_address(String profider_address) {
+        Profider_address = profider_address;
+    }
+
+    public String getProfider_phone() {
+        return Profider_phone;
+    }
+
+    public void setProfider_phone(String profider_phone) {
+        Profider_phone = profider_phone;
     }
 
     public int getEarth_type() {

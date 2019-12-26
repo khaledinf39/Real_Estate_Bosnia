@@ -3,6 +3,7 @@ package com.kh_sof_dev.real_estate_bosnia.Activities.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -13,10 +14,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,6 +45,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -76,16 +81,18 @@ public class Login_activity extends AppCompatActivity implements
 //    private TextView mDetailText;
 
     private EditText mPhoneNumberField;
-    private EditText mVerificationField;
+    private EditText mVerificationField,email,address;
 
     private Button mStartButton;
     private Button mVerifyButton;
     private Button mResendButton;
 
     private ImageView back_btn;
-
+ConstraintLayout user_info;
 private CheckBox term;
 Boolean term_=false;
+TextView term_read;
+public static int account_type=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +106,8 @@ Boolean term_=false;
             onRestoreInstanceState(savedInstanceState);
         }
 
-
+term_read=findViewById(R.id.term_read);
+        term_read.setOnClickListener(this);
 term=findViewById(R.id.term);
         term.setOnClickListener(this);
 
@@ -111,7 +119,15 @@ term=findViewById(R.id.term);
         });
         mPhoneNumberField = (EditText) findViewById(R.id.phone);
         mVerificationField = (EditText) findViewById(R.id.code);
+        email = (EditText) findViewById(R.id.email);
+        address = (EditText) findViewById(R.id.address);
+        user_info = (ConstraintLayout) findViewById(R.id.user_info);
+if (account_type==1){
+    user_info.setVisibility(View.GONE);
+}else {
+    user_info.setVisibility(View.VISIBLE);
 
+}
         mStartButton = (Button) findViewById(R.id.send_btn);
         mVerifyButton = (Button) findViewById(R.id.verfy_btn);
         mResendButton = (Button) findViewById(R.id.resend_btn);
@@ -266,9 +282,18 @@ term=findViewById(R.id.term);
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-
+FirebaseDatabase database=FirebaseDatabase.getInstance();
                             FirebaseUser user = task.getResult().getUser();
-                           startActivity(new Intent(Login_activity.this,MainActivity.class));
+                            DatabaseReference reference=database.getReference("Users").child(user.getUid());
+                            String email_=email.getText().toString();
+                            String address_=address.getText().toString();
+                            Map<String, Object> map= new HashMap<>();
+                            map.put("email",email_);
+                            map.put("address",address_);
+                            Task<Void> voidTask = reference.updateChildren(map);
+                            if (voidTask.isSuccessful()) {
+                                startActivity(new Intent(Login_activity.this, MainActivity.class));
+                            }
                             // [START_EXCLUDE]
                             updateUI(STATE_SIGNIN_SUCCESS, user);
                             // [END_EXCLUDE]
@@ -421,11 +446,25 @@ term=findViewById(R.id.term);
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.term_read:
+
+              startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://bosna1.com/public/site-usage.htm" )));//https://bosna1.com/public/site-usage.htm
+                break;
             case R.id.term:
 //                LoadPdfFile("term_condition");
                 break;
             case R.id.send_btn:
+if (account_type==2){
+    if (email.getText().toString().isEmpty() || !email.getText().toString().contains("@")){
+        email.setError(email.getHint());
+        return;
+    }
 
+    if (address.getText().toString().isEmpty()){
+        address.setError(address.getHint());
+        return;
+    }
+}
                 if (!term_){
                     Toast.makeText(getApplicationContext(),getString(R.string.term),Toast.LENGTH_LONG).show();
                     return;

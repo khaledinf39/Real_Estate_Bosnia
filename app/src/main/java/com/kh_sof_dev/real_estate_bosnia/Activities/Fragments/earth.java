@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.jaygoo.widget.OnRangeChangedListener;
 import com.jaygoo.widget.RangeSeekBar;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Activities.Add_new;
+import com.kh_sof_dev.real_estate_bosnia.Activities.Activities.Login_activity;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Activities.MainActivity;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.earth_adapter;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.filla_adapter;
@@ -66,52 +68,34 @@ public class earth extends Fragment implements View.OnClickListener {
             }
 
             @Override
-            public void onfilterPrice(Double p1, Double p2) {
-                if (p2==0.0){
-                    return;
-                }
-
+            public void onfilterItem(List<MainActivity.items> items_) {
                 real_estateList_filter.clear();
-                real_estateList_filter.addAll(filter(p1,p2,"price",real_estateList));
+                real_estateList_filter.addAll(real_estateList);
+                for (MainActivity.items i:items_
+                     ) {
+                    switch (i.name){
+
+                        case "e":
+                            real_estateList_filter=filter(i.value1,i.value2,"earth",real_estateList_filter);
+                            break;
+                        case "t":
+                            real_estateList_filter=filter_type(i.value3,real_estateList_filter);
+                            break;
+
+                    }
+                }
                 adapter=new earth_adapter(getContext(),real_estateList_filter);
                 RV.setAdapter(adapter);
             }
 
-            @Override
-            public void onfilterRoom(Double r1, Double r2) {
-
-            }
-
-            @Override
-            public void onfilterBath(Double b1, Double b2) {
-
-            }
-
-
-            @Override
-            public void onfilterearth(Double e1, Double e2) {
-                if (e2==0.0){
-                    return;
-                }
-
-                real_estateList_filter.clear();
-                real_estateList_filter.addAll(filter(e1,e2,"earth",real_estateList));
-                adapter=new earth_adapter(getContext(),real_estateList_filter);
-                RV.setAdapter(adapter);
-            }
-
-            @Override
-            public void onfilterbulding(Double p1, Double p2) {
-
-            }
 
             @Override
             public void onfiltertype(int type) {
 
-                real_estateList_filter.clear();
-                real_estateList_filter.addAll(filter_type(type,real_estateList));
-                adapter=new earth_adapter(getContext(),real_estateList_filter);
-                RV.setAdapter(adapter);
+//                real_estateList_filter.clear();
+//                real_estateList_filter.addAll(filter_type(type,real_estateList));
+//                adapter=new earth_adapter(getContext(),real_estateList_filter);
+//                RV.setAdapter(adapter);
             }
         };
         return view;
@@ -271,13 +255,13 @@ earth_adapter adapter;
             case "price":
                 for (Real_estate r:real_estateList
                 ) {
-                    if (r.getPrice()<= v2 && r.getPrice()>=v1){
+                    if (r.getPrice1()<= v2 && r.getPrice()>= v1){
                         mlist.add(r);
                     }
                 }
                 break;
         }
-       // Toast.makeText(getContext(),mlist.size()+"   size  ",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),mlist.size()+"   size  ",Toast.LENGTH_SHORT).show();
         if (mlist.size()==0){
             return real_estateList;
         }else {
@@ -321,8 +305,13 @@ noitem=view.findViewById(R.id.noItem);
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fab:
-                Intent intent=new Intent(getActivity(), Add_new.class);
-                startActivity(intent);
+                if(FirebaseAuth.getInstance().getCurrentUser()==null){
+                    Intent intent=new Intent(getActivity(), Login_activity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(getActivity(), Add_new.class);
+                    startActivity(intent);
+                }
                 break;
 
 

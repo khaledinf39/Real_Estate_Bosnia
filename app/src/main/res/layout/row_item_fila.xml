@@ -240,6 +240,31 @@ android:id="@+id/bulding_nb"
 android:id="@+id/price_nb"
             android:textColor="@color/bk_red"
             />
+<ImageView
+    android:visibility="gone"
+
+    android:layout_width="20dp"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_to"
+    android:layout_marginBottom="10dp"
+    android:id="@+id/to"
+    app:layout_constraintLeft_toRightOf="@+id/price_nb"
+    app:layout_constraintBottom_toBottomOf="@+id/price_nb"/>
+
+        <TextView
+            android:visibility="gone"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingTop="15dp"
+            app:layout_constraintLeft_toRightOf="@+id/to"
+            android:text="€4,999"
+            android:fontFamily="@font/saudi"
+            android:textSize="16dp"
+            android:id="@+id/price_nb1"
+            android:textColor="@color/bk_red"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

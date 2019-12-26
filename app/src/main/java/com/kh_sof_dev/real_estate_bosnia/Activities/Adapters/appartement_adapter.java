@@ -53,6 +53,7 @@ public class appartement_adapter extends RecyclerView.Adapter<appartement_adapte
         Log.d(TAG, "onBindViewHolder: called.");
         holder.id.setText(mItems.get(position).getNb()+"");
         holder.price.setText(mItems.get(position).getPrice().toString()+" €");
+        holder.price1.setText(mItems.get(position).getPrice1().toString()+" €");
 
         holder.room.setText(mItems.get(position).getRoom()+"");
         holder.bath.setText(mItems.get(position).getBath()+"");
@@ -63,7 +64,7 @@ public class appartement_adapter extends RecyclerView.Adapter<appartement_adapte
         holder.bulding.setText(mItems.get(position).getBuilding()+" m2");
         holder.place.setText(mItems.get(position).getLocation().getCity()+"");
         Picasso.with(mContext)
-                .load(mItems.get(position).getImg1())
+                .load(mItems.get(position).getImagesURL().get(0))
                 .placeholder(mContext.getDrawable(R.drawable.img))
         .into(holder.img);
         if (mItems.get(position).getSolde()){
@@ -88,13 +89,14 @@ public class appartement_adapter extends RecyclerView.Adapter<appartement_adapte
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView id,price,room,bath,earth,earth_txt,bulding,place;
+        TextView id,price,price1,room,bath,earth,earth_txt,bulding,place;
 ImageView img,solde;
         public ViewHolder(View itemView) {
             super(itemView);
             id=itemView.findViewById(R.id.nb);
             room=itemView.findViewById(R.id.room_nb);
             price=itemView.findViewById(R.id.price_nb);
+            price1=itemView.findViewById(R.id.price_nb1);
             place=itemView.findViewById(R.id.place);
 
             bath=itemView.findViewById(R.id.bath_nb);

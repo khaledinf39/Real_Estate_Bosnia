@@ -29,12 +29,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Activities.Add_new;
+import com.kh_sof_dev.real_estate_bosnia.Activities.Activities.Login_activity;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Activities.MainActivity;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.appartement_adapter;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.earth_adapter;
@@ -70,59 +72,29 @@ public class Appartement extends Fragment implements View.OnClickListener {
             }
 
             @Override
-            public void onfilterPrice(Double p1, Double p2) {
-                if (p2==0.0){
-                    return;
-                }
+            public void onfilterItem(List<MainActivity.items> items_) {
+                real_estateList_filter.clear();
+                real_estateList_filter.addAll(real_estateList);
+                for (MainActivity.items i:items_
+                ) {
+                    switch (i.name){
+                        case "r":
+                            real_estateList_filter=filter(i.value1,i.value2,"room",real_estateList_filter);
+                            break;
+                        case "ba":
+                            real_estateList_filter=filter(i.value1,i.value2,"bath",real_estateList_filter);
+                            break;
+                        case "b":
+                            real_estateList_filter=filter(i.value1,i.value2,"bulding",real_estateList_filter);
+                            break;
 
-               List<Real_estate> real_estateList_filter=new ArrayList<>();
-                real_estateList_filter.addAll(filter(p1,p2,"price",real_estateList));
+
+
+                    }
+                }
                 adapter=new appartement_adapter(getContext(),real_estateList_filter);
                 RV.setAdapter(adapter);
             }
-
-            @Override
-            public void onfilterRoom(Double r1, Double r2) {
-                if (r2==0.0){
-                    return;
-                }
-
-                List<Real_estate> real_estateList_filter=new ArrayList<>();
-                real_estateList_filter.addAll(filter( r1,r2,"room",real_estateList));
-                adapter=new appartement_adapter(getContext(),real_estateList_filter);
-                RV.setAdapter(adapter);
-            }
-
-            @Override
-            public void onfilterBath(Double b1, Double b2) {
-                if (b2==0.0){
-                    return;
-                }
-
-                List<Real_estate> real_estateList_filter=new ArrayList<>();
-                real_estateList_filter.addAll(filter( b1,b2,"bath",real_estateList));
-                adapter=new appartement_adapter(getContext(),real_estateList_filter);
-                RV.setAdapter(adapter);
-            }
-
-
-            @Override
-            public void onfilterearth(Double e1, Double e2) {
-
-            }
-
-            @Override
-            public void onfilterbulding(Double p1, Double p2) {
-                if (p2==0.0){
-                    return;
-                }
-
-                List<Real_estate> real_estateList_filter=new ArrayList<>();
-                real_estateList_filter.addAll(filter(p1,p2,"bulding",real_estateList));
-                adapter=new appartement_adapter(getContext(),real_estateList_filter);
-                RV.setAdapter(adapter);
-            }
-
             @Override
             public void onfiltertype(int type) {
 //
@@ -169,13 +141,13 @@ public class Appartement extends Fragment implements View.OnClickListener {
             case "price":
                 for (Real_estate r:real_estateList
                 ) {
-                    if (r.getPrice()<= v2 && r.getPrice()>=v1){
+                    if (r.getPrice1()<= v2 && r.getPrice()>= v1){
                         mlist.add(r);
                     }
                 }
                 break;
         }
-     //   Toast.makeText(getContext(),mlist.size()+"   size  ",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),mlist.size()+"   size  ",Toast.LENGTH_SHORT).show();
         if (mlist.size()==0){
             return real_estateList;
         }else {
@@ -185,9 +157,11 @@ public class Appartement extends Fragment implements View.OnClickListener {
     //////////////////////////////////////////////////////////////////////////////////////////*
     appartement_adapter adapter;
     List<Real_estate> real_estateList;
+    List<Real_estate> real_estateList_filter;
     private void FetchAllData(String gov, String mun) {
 
         real_estateList=new ArrayList<>();
+        real_estateList_filter=new ArrayList<>();
         adapter=new appartement_adapter(getContext(),real_estateList);
         RV.setAdapter(adapter);
         if (gov==null){
@@ -317,8 +291,14 @@ public class Appartement extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fab:
-                Intent intent=new Intent(getActivity(), Add_new.class);
-                startActivity(intent);
+                if(FirebaseAuth.getInstance().getCurrentUser()==null){
+                    Intent intent=new Intent(getActivity(), Login_activity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(getActivity(), Add_new.class);
+                    startActivity(intent);
+                }
+
                 break;
 
 

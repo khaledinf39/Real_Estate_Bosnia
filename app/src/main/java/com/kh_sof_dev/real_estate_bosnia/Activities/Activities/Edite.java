@@ -1,18 +1,11 @@
 package com.kh_sof_dev.real_estate_bosnia.Activities.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -26,21 +19,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -64,19 +59,19 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.Gover_adapter;
-import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.Spinner_adapter;
-import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.FetchData;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Real_estate;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.ResizePickedImage;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.location;
 import com.kh_sof_dev.real_estate_bosnia.R;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,43 +80,21 @@ import java.util.Map;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static java.security.AccessController.getContext;
-
-public class Add_new extends AppCompatActivity implements View.OnClickListener,
+public class Edite extends AppCompatActivity implements View.OnClickListener,
         SeekBar.OnSeekBarChangeListener, OnMapReadyCallback {
     String TAG="uploaded";
     private static final int PICK_IMAGE_REQUEST =1 ;
     private GoogleMap mMap;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new);
         init();
-getProvider_inf();
+        GetData();
 
     }
-String Profider_email="",Profider_address="";
-    private void getProvider_inf() {
-        FirebaseDatabase database=FirebaseDatabase.getInstance();
-        DatabaseReference ref=database.getReference("Users");
-        ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
-                            Profider_email=dataSnapshot.child("email").getValue(String.class);
-                            Profider_address=dataSnapshot.child("address").getValue(String.class);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    int RealNB=100;
+int RealNB=100;
     @Override
     protected void onStart() {
         super.onStart();
@@ -145,15 +118,15 @@ String Profider_email="",Profider_address="";
     }
 
     ////////////////////////init////////////////
+    private Real_estate real_estate;
     SeekBar seek_bath,seek_price,seek_room,seek_bulding,seek_earth;
     EditText nb_bath,nb_price,nb_room,nb_bulding,nb_earth,nb_price1;
-    TextView  location_tv;
+          TextView  location_tv;
     RadioButton radio_building,radio_filla,radio_earth;
-    Button type1,type2,save,img1,img2,img3,
-    img4,img5,img6,img7,img8,img9,img10;
+    Button type1,type2,save,img1,img2,img3;
     EditText youtup;
 ImageView back_btn;
-LinearLayout types_lay,info1,earth_lay,building_lay,info_lay;
+LinearLayout types_lay,info_lay;
     CheckBox solde;
     Button   Governorate_sp,municipality_sp,zomin,zomout;
     private void init() {
@@ -190,32 +163,18 @@ LinearLayout types_lay,info1,earth_lay,building_lay,info_lay;
         img1=findViewById(R.id.take_img1);
         img2=findViewById(R.id.take_img2);
         img3=findViewById(R.id.take_img3);
-
-        img4=findViewById(R.id.take_img4);
-        img5=findViewById(R.id.take_img5);
-        img6=findViewById(R.id.take_img6);
-        img7=findViewById(R.id.take_img7);
-        img8=findViewById(R.id.take_img8);
-        img9=findViewById(R.id.take_img9);
-        img10=findViewById(R.id.take_img10);
-
-
         save=findViewById(R.id.save);
+
+
+        img1.setVisibility(View.GONE);
+        img2.setVisibility(View.GONE);
+        img3.setVisibility(View.GONE);
 
         type1.setOnClickListener(this);
         type2.setOnClickListener(this);
         img1.setOnClickListener(this);
         img2.setOnClickListener(this);
         img3.setOnClickListener(this);
-        img4.setOnClickListener(this);
-        img5.setOnClickListener(this);
-        img6.setOnClickListener(this);
-        img7.setOnClickListener(this);
-        img8.setOnClickListener(this);
-        img9.setOnClickListener(this);
-        img10.setOnClickListener(this);
-
-
         save.setOnClickListener(this);
 
         youtup=findViewById(R.id.youtup);
@@ -226,10 +185,6 @@ LinearLayout types_lay,info1,earth_lay,building_lay,info_lay;
         solde.setOnClickListener(this);
 
         types_lay=findViewById(R.id.type_lay);
-        earth_lay=findViewById(R.id.earth_lay);
-        building_lay=findViewById(R.id.bulding_lay);
-        info1=findViewById(R.id.info1);
-
         info_lay=findViewById(R.id.info);
         info_lay.setVisibility(View.GONE);
         back_btn=findViewById(R.id.back_btn);
@@ -267,7 +222,7 @@ String Govern_key=null;
                 getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view1 = inflater.inflate(R.layout.spinnerlistitems_layout, null);
         final List<Governorate> mlist=new ArrayList<>();
-       final  Gover_adapter adapter=new Gover_adapter(Add_new.this, mlist, new Gover_adapter.Onselected() {
+       final  Gover_adapter adapter=new Gover_adapter(Edite.this, mlist, new Gover_adapter.Onselected() {
             @Override
             public void onitemselect(com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
                 Govern_key=governorate.getUid();
@@ -279,7 +234,7 @@ String Govern_key=null;
             }
         });
         RecyclerView RV=view1.findViewById(R.id.RV);
-        RV.setLayoutManager(new LinearLayoutManager(Add_new.this,LinearLayoutManager.VERTICAL,false));
+        RV.setLayoutManager(new LinearLayoutManager(Edite.this,LinearLayoutManager.VERTICAL,false));
         RV.setAdapter(adapter);
 
        final ProgressBar progressBar= view1.findViewById(R.id.progress);
@@ -322,7 +277,7 @@ String Govern_key=null;
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BottomSheetDialog dialog=new BottomSheetDialog(Add_new.this);
+                final BottomSheetDialog dialog=new BottomSheetDialog(Edite.this);
                 dialog.setContentView(R.layout.popup_add_new);
                 final TextView name=dialog.findViewById(R.id.name);
                 LinearLayout add_ = dialog.findViewById(R.id.add);
@@ -363,7 +318,7 @@ String Govern_key=null;
                 getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view1 = inflater.inflate(R.layout.spinnerlistitems_layout, null);
         final List<Governorate> mlist=new ArrayList<>();
-        final  Gover_adapter adapter=new Gover_adapter(Add_new.this, mlist, new Gover_adapter.Onselected() {
+        final  Gover_adapter adapter=new Gover_adapter(Edite.this, mlist, new Gover_adapter.Onselected() {
             @Override
             public void onitemselect(com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
                 Mun_key=governorate.getUid();
@@ -372,7 +327,7 @@ String Govern_key=null;
             }
         });
         RecyclerView RV=view1.findViewById(R.id.RV);
-        RV.setLayoutManager(new LinearLayoutManager(Add_new.this,LinearLayoutManager.VERTICAL,false));
+        RV.setLayoutManager(new LinearLayoutManager(Edite.this,LinearLayoutManager.VERTICAL,false));
         RV.setAdapter(adapter);
 
         final ProgressBar progressBar= view1.findViewById(R.id.progress);
@@ -415,7 +370,7 @@ String Govern_key=null;
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BottomSheetDialog dialog=new BottomSheetDialog(Add_new.this);
+                final BottomSheetDialog dialog=new BottomSheetDialog(Edite.this);
                 dialog.setContentView(R.layout.popup_add_new);
                 final TextView name=dialog.findViewById(R.id.name);
                 LinearLayout add_ = dialog.findViewById(R.id.add);
@@ -451,7 +406,6 @@ String Govern_key=null;
 
 
     }
-    View img;
     int _earth_type=1;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -466,54 +420,19 @@ String Govern_key=null;
                 _earth_type=2;
                 break;
             case R.id.take_img1:
-                img=v;
                 imageBrowse(1);
                 break;
             case R.id.take_img2:
-                img=v;
                 imageBrowse(2);
                 break;
             case R.id.take_img3:
-                img=v;
                 imageBrowse(3);
                 break;
-            case R.id.take_img4:
-                img=v;
-                imageBrowse(4);
-                break;
-
-            case R.id.take_img5:
-                img=v;
-                imageBrowse(5);
-                break;
-            case R.id.take_img6:
-                img=v;
-                imageBrowse(6);
-                break;
-            case R.id.take_img7:
-                img=v;
-                imageBrowse(7);
-                break;
-            case R.id.take_img8:
-                img=v;
-                imageBrowse(8);
-                break;
-            case R.id.take_img9:
-                img=v;
-                imageBrowse(9);
-                break;
-
-                case R.id.take_img10:
-                    img=v;
-                imageBrowse(10);
-                break;
-
-
             case R.id.save:
                 save_info();
                 break;
             case R.id.back_btn:
-                startActivity(new Intent(Add_new.this,MainActivity.class));
+                startActivity(new Intent(Edite.this,MainActivity.class));
                 finish();
                 break;
             case R.id.governomo_sp:
@@ -535,19 +454,24 @@ String Govern_key=null;
                 break;
         }
 
+
+
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void GetData( ){
+        real_estate=Details.real_estate;
         List<View> seekBarList=new ArrayList<>();
         List<View> seekBarList2=new ArrayList<>();
 
-        switch (v.getId()){
+        switch (real_estate.getType()){
 
-            case R.id.appartement:
-
-                earth_lay.setVisibility(View.GONE);
+            case 3:
+                radio_building.setChecked(true);
+                radio_earth.setEnabled(false);
+                radio_filla.setEnabled(false);
                 info_lay.setVisibility(View.VISIBLE);
                 types_lay.setVisibility(View.GONE);
-                info1.setVisibility(View.VISIBLE);
-                building_lay.setVisibility(View.VISIBLE);
-
                 seekBarList.add(nb_bath);
                 seekBarList.add(nb_room);
                 seekBarList.add(nb_bulding);
@@ -556,12 +480,14 @@ String Govern_key=null;
                 setEnabel(seekBarList2,false);
                 break;
 
-            case R.id.earth:
-                earth_lay.setVisibility(View.VISIBLE);
+            case 1:
+                radio_filla.setEnabled(false);
+                radio_building.setEnabled(false);
+
+                radio_earth.setChecked(true);
                 types_lay.setVisibility(View.VISIBLE);
                 info_lay.setVisibility(View.VISIBLE);
-                info1.setVisibility(View.GONE);
-                building_lay.setVisibility(View.GONE);
+
                 seekBarList2.add(nb_bath);
                 seekBarList2.add(nb_room);
                 seekBarList2.add(nb_bulding);
@@ -570,15 +496,13 @@ String Govern_key=null;
                 seekBarList.add(nb_earth);
                 setEnabel(seekBarList,true);
                 break;
-            case R.id.filla:
-                earth_lay.setVisibility(View.VISIBLE);
-                info1.setVisibility(View.VISIBLE);
-                building_lay.setVisibility(View.VISIBLE);
-
+            case 2:
                 types_lay.setVisibility(View.GONE);
                 info_lay.setVisibility(View.VISIBLE);
 
-
+radio_filla.setChecked(true);
+                radio_earth.setEnabled(false);
+                radio_building.setEnabled(false);
                 seekBarList.add(nb_bath);
                 seekBarList.add(nb_room);
                 seekBarList.add(nb_bulding);
@@ -589,30 +513,168 @@ String Govern_key=null;
 
 
         }
+        youtup.setText(real_estate.getYoutup());
+        location_tv.setText(real_estate.getLocation().getCity());
+GetGov_mun();
+        if (real_estate.getSolde()){
+            isSolde=solde.isChecked();
+        }
 
+        double data = real_estate.getBuilding();
+        int value = (int)data;
+        seek_bath.setProgress(real_estate.getBath());
+
+        seek_room.setProgress(real_estate.getRoom());
+        seek_bulding.setProgress(value);
+
+        double data1 = real_estate.getEarth();
+        int value1 = (int)data1;
+        seek_earth.setProgress(value1);
+
+        double data2 = real_estate.getPrice();
+        int value2 = (int)data2;
+        seek_price.setProgress(value2);
+
+
+        switch (real_estate.getEarth_type()) {
+            case 1:
+                change_selector(type1, type2);
+                _earth_type = 1;
+                break;
+            case 2:
+                change_selector(type2, type1);
+                _earth_type = 2;
+                break;
+        }
+//        String compresedImagePath;
+//        try {
+//           Uri returnUri=Uri.parse(real_estate.getImagesURL().get(0));
+//
+//            URL url = new URL(real_estate.getImagesURL().get(0));
+//            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//            BitmapDrawable background = new BitmapDrawable(bmp);
+//            img1.setBackground(background);
+//
+//            Picasso.with(this)
+//                    .load(url)
+//                    .resize(width,height).noFade().into(img1);
+//            ResizePickedImage resizePickedImage = new ResizePickedImage();
+//            String realePath = resizePickedImage.getRealPathFromURI(returnUri, this);
+//            compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
+//                    (this, realePath, "image1");
+//            if (mPaths.contains(compresedImagePath)) {
+//                mPaths.remove(compresedImagePath);
+//
+//            }
+//            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),returnUri);
+//
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            Uri returnUri=Uri.parse(real_estate.getImagesURL().get(1));
+//            ResizePickedImage resizePickedImage = new ResizePickedImage();
+//            String realePath = resizePickedImage.getRealPathFromURI(returnUri, this);
+//             compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
+//                    (this, realePath, "image2");
+//            if (mPaths.contains(compresedImagePath)) {
+//                mPaths.remove(compresedImagePath);
+//
+//            }
+//            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),returnUri);
+//            BitmapDrawable background = new BitmapDrawable(bitmap);
+//            img2.setBackground(background);
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//
+//        try {
+//            Uri returnUri=Uri.parse(real_estate.getImagesURL().get(2));
+//            ResizePickedImage resizePickedImage = new ResizePickedImage();
+//            String realePath = resizePickedImage.getRealPathFromURI(returnUri, this);
+//             compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
+//                    (this, realePath, "image3");
+//            if (mPaths.contains(compresedImagePath)) {
+//                mPaths.remove(compresedImagePath);
+//
+//            }
+//            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),returnUri);
+//            BitmapDrawable background = new BitmapDrawable(bitmap);
+//            img3.setBackground(background);
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
-FirebaseDatabase database;
+
+    private void GetGov_mun() {
+        FirebaseDatabase database=FirebaseDatabase.getInstance();
+        DatabaseReference reference=database.getReference()
+                .child("Governorate")
+                .child(real_estate.getGovkey());
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String name=dataSnapshot.child("name").getValue(String.class);
+
+                    Governorate_sp.setText(name);
+                    Governorate_sp.setEnabled(false);
+
+                   dataSnapshot .child("Municipality")
+                           .child(real_estate.getMunkey())
+                           .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                           if (dataSnapshot.exists()){
+                               String name=dataSnapshot.child("name").getValue(String.class);
+
+                               municipality_sp.setText(name);
+                               municipality_sp.setEnabled(false);
+                           }
+                       }
+
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                       }
+                   });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    FirebaseDatabase database;
     DatabaseReference myRef;
     FirebaseStorage storage;
     String Governorate=null,municipality=null;
     private void save_info() {
 
-        if (Govern_key==null){
-            Toast.makeText(this,"لم تختار المحافظة بعد",Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (Mun_key==null){
-            Toast.makeText(this,"لم تختار البلدية بعد",Toast.LENGTH_LONG).show();
-            return;
-        }
-        FirebaseAuth auth=FirebaseAuth.getInstance();
-        Real_estate real=new Real_estate();
-        if (auth.getCurrentUser()!=null){
-            real.setProfider_phone(auth.getCurrentUser().getPhoneNumber());
-            real.setProfider_address(Profider_address);
-            real.setProfider_email(Profider_email);
-        }
+//        if (Govern_key==null){
+//            Toast.makeText(this,"لم تختار المحافظة بعد",Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        if (Mun_key==null){
+//            Toast.makeText(this,"لم تختار البلدية بعد",Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        FirebaseAuth auth=FirebaseAuth.getInstance();
+//        Real_estate real=new Real_estate();
+//        if (auth.getCurrentUser()!=null){
+//
+//        }
 
+        Real_estate real=new Real_estate();
+        real.setProfider_phone(real_estate.getProfider_phone());
         int type = 0;
 String   tableName="";
         if (radio_building.isChecked()){
@@ -651,14 +713,17 @@ String   tableName="";
         real.setEarth_type(_earth_type);
         real.setPrice(Double.parseDouble(nb_price.getText().toString()));
         real.setPrice1(Double.parseDouble(nb_price1.getText().toString()));
+
         if (mLatLng!=null){
             real.setLocation(new location(mLatLng.latitude,mLatLng.longitude,location_tv.getText().toString()));
         }
-        real.setNb(RealNB);
+        real.setNb(real_estate.getNb());
+        Map<String, Object> map = new HashMap<>();
+        real.setImagesURL(real_estate.getImagesURL());
         //////*************************Loding*****************************/
         final ProgressDialog dialog=new ProgressDialog(this);
-        dialog.setTitle("رفع العقار");
-        final String msg="يتم رفع العقار الى قاعدة البيانات";
+        dialog.setTitle("تحديث العقار");
+        final String msg="يتم تحديث معلومات العقار في قاعدة البيانات";
         dialog.setMessage(msg);
         dialog.show();
 
@@ -667,78 +732,82 @@ String   tableName="";
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference()
                 .child("Governorate")
-                .child(Govern_key)
+                .child(real_estate.getGovkey())
                 .child("Municipality")
-                .child(Mun_key)
+                .child(real_estate.getMunkey())
                 .child(tableName);
         storage = FirebaseStorage.getInstance();
-        final String key = myRef.push().getKey();
+        final String key = real_estate.getUid();
         myRef.child(key).setValue(real);
-        DatabaseReference reference=database.getReference("Realestate").child("NB");
-        reference.setValue(RealNB+1);
-        if (mPaths.size() != 0) {
-            final List<String> imagesURL = new ArrayList<>();
-            for (int i = 0; i < mPaths.size(); i++) {
-                System.out.println("Start upload images");
-                InputStream stream = null;
-                try {
-                    stream = new FileInputStream(new File(mPaths.get(i)));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                final String uuid = "image" + i;
-                final StorageReference ref = storage.getReference().child(tableName).child(key).child(uuid + ".jpg");
-
-                final UploadTask uploadTask = ref.putStream(stream);
-
-                uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//
-                        double progress = (-100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                        Log.d(TAG, "onProgress: " + progress);
-                        System.out.println("Upload is " + progress + "% done");
-                        dialog.setMessage(msg+"\n"+
-                                " تم تحميل  " + progress + "% ");
-
-                    }
-                });
-                final String finalTableName = tableName;
-                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        // GET THE IMAGE DOWNLOAD URL
-
-                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                System.out.println("uri " + uri.toString());
-//                                uploadingImagePB.setProgress(0);
-//                                progressBarLayout.setVisibility(View.GONE);
-
-                                Log.d(TAG, "onSuccess: the image uploded " + uri.toString());
-                                Map<String, Object> map = new HashMap<>();
-                                imagesURL.add(uri.toString());
-                                map.put("imagesURL", imagesURL);
-                                myRef   .child(key).updateChildren(map);
-                                /********************** finsh****************/
-                                dialog.dismiss();
-                                Toast.makeText(Add_new.this,
-                                        "تم رفع العقار بنجاح  ..!"
+        Toast.makeText(Edite.this,
+                                        "تم تحديث معلومات العقار بنجاح  ..!"
                                         , Toast.LENGTH_LONG).show();
+       dialog.dismiss();
+       finish();
+
+//        if (mPaths.size() != 0) {
+//            final List<String> imagesURL = new ArrayList<>();
+//            for (int i = 0; i < mPaths.size(); i++) {
+//                System.out.println("Start upload images");
+//                InputStream stream = null;
+//                try {
+//                    stream = new FileInputStream(new File(mPaths.get(i)));
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//                final String uuid = "image" + i;
+//                final StorageReference ref = storage.getReference().child(tableName).child(key).child(uuid + ".jpg");
 //
-             DatabaseReference reference1=database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-              reference1.child("My_Real_Estate").push().setValue(key);
-                                System.out.println(" END OF THE ON OnSuccessListener");
-                            }
-//                            System.out.println(" END OF THE ON OnSuccessListener");
-                        });
-                        System.out.println(" END OF THE ON COMPLETE");
-                    }
-                });
-            }
-        }
+//                final UploadTask uploadTask = ref.putStream(stream);
+//
+//                uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+////
+//                        double progress = (-100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+//
+//                        Log.d(TAG, "onProgress: " + progress);
+//                        System.out.println("Upload is " + progress + "% done");
+//                        dialog.setMessage(msg+"\n"+
+//                                " تم تحميل  " + progress + "% ");
+//
+//                    }
+//                });
+//                final String finalTableName = tableName;
+//                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//                        // GET THE IMAGE DOWNLOAD URL
+//
+//                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                            @Override
+//                            public void onSuccess(Uri uri) {
+//                                System.out.println("uri " + uri.toString());
+////                                uploadingImagePB.setProgress(0);
+////                                progressBarLayout.setVisibility(View.GONE);
+//
+//                                Log.d(TAG, "onSuccess: the image uploded " + uri.toString());
+//                                Map<String, Object> map = new HashMap<>();
+//                                imagesURL.add(uri.toString());
+//                                map.put("imagesURL", imagesURL);
+//                                myRef   .child(key).updateChildren(map);
+//                                /********************** finsh****************/
+//                                dialog.dismiss();
+//                                Toast.makeText(Edite.this,
+//                                        "تم رفع العقار بنجاح  ..!"
+//                                        , Toast.LENGTH_LONG).show();
+////
+//             DatabaseReference reference1=database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//              reference1.child("My_Real_Estate").push().setValue(key);
+//                                System.out.println(" END OF THE ON OnSuccessListener");
+//                            }
+////                            System.out.println(" END OF THE ON OnSuccessListener");
+//                        });
+//                        System.out.println(" END OF THE ON COMPLETE");
+//                    }
+//                });
+//            }
+//        }
 
 
     }
@@ -786,7 +855,7 @@ private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE
 
 
 
-
+                if (requestCode == 1 || requestCode == 2 || requestCode == 3) {
                     System.out.println("100000");
                     Uri returnUri = data.getData();
                     ResizePickedImage resizePickedImage = new ResizePickedImage();
@@ -798,19 +867,40 @@ private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE
                         Uri contentURI = data.getData();
                         bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), contentURI);
                         BitmapDrawable background = new BitmapDrawable(bitmap);
-
+                        if (requestCode == 1) {
 
                             compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
-                                    (this, realePath, "image"+requestCode);
+                                    (this, realePath, "image1");
                             if (mPaths.contains(compresedImagePath)) {
                                 mPaths.remove(compresedImagePath);
 
                             }
                                 mPaths.add(compresedImagePath);
-                                img.setBackground(background);
+                                img1.setBackground(background);
 
 
+                        } else if (requestCode == 2) {
+                            compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
+                                    (this, realePath, "image2");
+                            if (mPaths.contains(compresedImagePath)) {
+                                mPaths.remove(compresedImagePath);
 
+                            }
+                                mPaths.add(compresedImagePath);
+                                img2.setBackground(background);
+
+
+                        } else if (requestCode == 3) {
+                            compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
+                                    (getApplicationContext(), realePath, "image3");
+                            if (mPaths.contains(compresedImagePath)) {
+                                mPaths.remove(compresedImagePath);
+                            }
+                                mPaths.add(compresedImagePath);
+
+                                img3.setBackground(background);
+
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -820,7 +910,7 @@ private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE
 
 
 
-
+        }
 
     }
 
@@ -838,12 +928,14 @@ private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
+
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(44.641969, 17.867077);
        // mMap.addMarker(new MarkerOptions().position(sydney).title("تسليتش"));
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
+        mLatLng=new LatLng(real_estate.getLocation().getLat(),real_estate.getLocation().getLng());
+        make_marke(mLatLng);
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {

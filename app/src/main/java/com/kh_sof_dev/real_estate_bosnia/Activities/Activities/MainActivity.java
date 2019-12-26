@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -28,11 +29,13 @@ import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,16 +83,16 @@ Double p1=0.0,p2=0.0,e1=0.0,e2=0.0,b1=0.0,b2=0.0;
                 break;
 
             case R.id.seek_bar_bulding:
-                bulding1.setText(leftValue+" m2");
-                bulding2.setText(rightValue+" m2");
+                bulding1.setText(Math.round(leftValue)+"");
+                bulding2.setText(Math.round(rightValue)+"");
                 b1= (double)leftValue;
                 b2= (double)rightValue;
 
                 break;
 
             case R.id.seek_bar_earth:
-                earth1.setText(leftValue+" m2");
-                earth2.setText(rightValue+" m2");
+                earth1.setText(Math.round(leftValue)+"");
+                earth2.setText(Math.round(rightValue)+"");
 
                 e1= Double.valueOf(leftValue);
                 e2= Double.valueOf(rightValue);
@@ -97,8 +100,8 @@ Double p1=0.0,p2=0.0,e1=0.0,e2=0.0,b1=0.0,b2=0.0;
                 break;
 
             case R.id.seek_bar_price:
-                price1.setText(leftValue+" €");
-                price2.setText(rightValue+" €");
+                price1.setText(Math.round(leftValue)+"");
+                price2.setText(Math.round(rightValue)+"");
 
                 p1= Double.valueOf(leftValue);
                 p2= Double.valueOf(rightValue);
@@ -121,45 +124,34 @@ Double p1=0.0,p2=0.0,e1=0.0,e2=0.0,b1=0.0,b2=0.0;
     public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
 
     }
+    public class items{
+        public String name;
+        public Double value1=0.0,value2=0.0;
+public int value3=0;
+        public items(String name, Double value1, Double value2) {
+            this.name = name;
+            this.value1 = value1;
+            this.value2 = value2;
+        }
 
-    @Override
-    public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
-        switch (view.getId()){
-            case R.id.seek_bar_bath:
-                mLisstenner.onfilterBath(ba1,ba2);
-                break;
-
-            case R.id.seek_bar_bulding:
-                mLisstenner.onfilterbulding(b1,b2);
-                break;
-
-            case R.id.seek_bar_earth:
-                mLisstenner.onfilterearth(e1,e2);
-                break;
-
-            case R.id.seek_bar_price:
-                mLisstenner.onfilterPrice(p1,p2);
-                Toast.makeText(MainActivity.this,p1+"     "+p2,Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.seek_bar_room:
-                mLisstenner.onfilterRoom(r1,r2);
-
-                break;
-
+        public items(String name, int value3) {
+            this.name = name;
+            this.value3 = value3;
         }
     }
-
     public  interface onsleactGoverment{
-    void  onselectItem(String gov,String mun);
-        void  onfilterPrice(Double p1,Double p2);
-        void  onfilterRoom(Double r1,Double r2);
-        void  onfilterBath(Double b1,Double b2);
-        void  onfilterearth(Double e1,Double e2);
-        void  onfilterbulding(Double p1,Double p2);
+        void  onselectItem(String gov,String mun);
+        void  onfilterItem(List<items> items);
+
         void  onfiltertype(int type);
-}
-public static onsleactGoverment mLisstenner;
+    }
+    public static onsleactGoverment mLisstenner;
+    @Override
+    public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+    }
+
+
     Fragment appartement=new Appartement();
     Fragment Filla=new Fila();
     Fragment earth=new earth();
@@ -175,7 +167,7 @@ public static onsleactGoverment mLisstenner;
     public static Context context;
 
     private ViewPager mViewPager;
-    TextView room1,price1,bath1,bulding1,earth1,room2,price2,bath2,bulding2,earth2;
+    EditText room1,price1,bath1,bulding1,earth1,room2,price2,bath2,bulding2,earth2;
     Button type1,type2,save;
 int type;
 
@@ -263,6 +255,7 @@ int type;
                 break;
             case R.id.filter:
                 show_filterPop();
+                filter.show();
                 break;
             case R.id.type1:
                 change_selector(type1,type2);
@@ -275,6 +268,49 @@ int type;
                 mLisstenner.onfiltertype(type);
                 break;
             case R.id.save:
+                List<items> items =new ArrayList<>();
+                p1=Double.parseDouble(price1.getText().toString());
+                p2=Double.parseDouble(price2.getText().toString());
+                items.add(new items("p",p1,p2));
+               try{
+                   e1=Double.parseDouble(earth1.getText().toString());
+                   e2=Double.parseDouble(earth2.getText().toString());
+
+                   items.add(new items("e",e1,e2));
+
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+
+               try{
+                   ba1=Double.parseDouble(bath1.getText().toString());
+                   ba2=Double.parseDouble(bath2.getText().toString());
+
+                   items.add(new items("ba",ba1,ba2));
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+
+               try {
+                   r1=Double.parseDouble(room1.getText().toString());
+                   r2=Double.parseDouble(room2.getText().toString());
+
+                   items.add(new items("r",r1,r2));
+
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+                try {
+                    b1=Double.parseDouble(bulding1.getText().toString());
+                    b2=Double.parseDouble(bulding2.getText().toString());
+
+                    items.add(new items("b",b1,b2));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                items.add(new items("t",type));
+                mLisstenner.onfilterItem(items);
                 filter.dismiss();
                 break;
             case R.id.governomo_sp:
@@ -319,8 +355,8 @@ int type;
         filter=new BottomSheetDialog(this);
         filter.setContentView(R.layout.popup_filter);
         int pagenb=mViewPager.getCurrentItem();
-        LinearLayout type_lay,price_lay,room_lay,bath_lay,bulding_lay,earth_lay;
-
+        ConstraintLayout price_lay,room_lay,bath_lay,bulding_lay,earth_lay;
+LinearLayout type_lay;
         RangeSeekBar roomsb,bathsb,buldingsb,earthsb,pricesb;
         type_lay=filter.findViewById(R.id.type_lay);
         price_lay=filter.findViewById(R.id.price_lay);
@@ -372,7 +408,7 @@ int type;
             earth_lay.setVisibility(View.GONE);
         }
 
-        filter.show();
+
     }
 
 
@@ -406,36 +442,17 @@ int type;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mLisstenner=new onsleactGoverment() {
-    @Override
-    public void onselectItem(String gov, String mun) {
-
-    }
-
-    @Override
-    public void onfilterPrice(Double p1, Double p2) {
-
-    }
 
             @Override
-            public void onfilterRoom(Double r1, Double r2) {
+            public void onselectItem(String gov, String mun) {
 
             }
 
             @Override
-            public void onfilterBath(Double b1, Double b2) {
+            public void onfilterItem(List<items> items) {
 
             }
 
-
-            @Override
-    public void onfilterearth(Double e1, Double e2) {
-
-    }
-
-    @Override
-    public void onfilterbulding(Double p1, Double p2) {
-
-    }
 
             @Override
             public void onfiltertype(int type) {
@@ -463,6 +480,8 @@ int type;
         tabLayout.setTabTextColors(Color.parseColor("#504E4E"), Color.parseColor("#131313"));
 
         tabLayout.setupWithViewPager(mViewPager);
+
+
     }
     PopupWindow mypopupWindow_gov ,mypopupWindow_mun;
     private void FetchAllData() {

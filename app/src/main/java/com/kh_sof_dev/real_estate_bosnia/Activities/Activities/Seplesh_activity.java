@@ -24,17 +24,11 @@ public class Seplesh_activity extends AppCompatActivity {
             @Override
             public void run() {
                 FirebaseAuth auth=FirebaseAuth.getInstance();
-                if (auth.getCurrentUser()==null){
-                    /***********/
-                    //openIntroPage
-                    startActivity(new Intent(Seplesh_activity.this,Login_activity.class));
-                    finish();
 
-                }else {
                     Intent intent = new Intent(Seplesh_activity.this, MainActivity.class);
                     startActivity(intent );
                     finish();
-                }
+
 
             }
         }, SPLASH_TIME);
