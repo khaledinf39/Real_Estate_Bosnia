@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -126,10 +127,15 @@ int RealNB=100;
     Button type1,type2,save,img1,img2,img3;
     EditText youtup;
 ImageView back_btn;
-LinearLayout types_lay,info_lay;
+    HorizontalScrollView imgs;
+    LinearLayout types_lay,info1,earth_lay,building_lay,info_lay;
     CheckBox solde;
     Button   Governorate_sp,municipality_sp,zomin,zomout;
+    EditText dis,locationurl;
     private void init() {
+        dis=findViewById(R.id.discription);
+        locationurl=findViewById(R.id.location);
+
         seek_bath=findViewById(R.id.seek_bar_bath);
         seek_room=findViewById(R.id.seek_bar_room);
         seek_price=findViewById(R.id.seek_bar_price);
@@ -165,10 +171,9 @@ LinearLayout types_lay,info_lay;
         img3=findViewById(R.id.take_img3);
         save=findViewById(R.id.save);
 
+        imgs=findViewById(R.id.imgs);
+        imgs.setVisibility(View.GONE);
 
-        img1.setVisibility(View.GONE);
-        img2.setVisibility(View.GONE);
-        img3.setVisibility(View.GONE);
 
         type1.setOnClickListener(this);
         type2.setOnClickListener(this);
@@ -185,14 +190,19 @@ LinearLayout types_lay,info_lay;
         solde.setOnClickListener(this);
 
         types_lay=findViewById(R.id.type_lay);
+        earth_lay=findViewById(R.id.earth_lay);
+        building_lay=findViewById(R.id.bulding_lay);
+        info1=findViewById(R.id.info1);
+
+        types_lay=findViewById(R.id.type_lay);
         info_lay=findViewById(R.id.info);
         info_lay.setVisibility(View.GONE);
         back_btn=findViewById(R.id.back_btn);
         back_btn.setOnClickListener(this);
 ///Map
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
         // Spinner
         Governorate_sp=findViewById(R.id.governomo_sp);
@@ -467,11 +477,17 @@ String Govern_key=null;
         switch (real_estate.getType()){
 
             case 3:
+                earth_lay.setVisibility(View.GONE);
+                info_lay.setVisibility(View.VISIBLE);
+                types_lay.setVisibility(View.GONE);
+                info1.setVisibility(View.VISIBLE);
+                building_lay.setVisibility(View.VISIBLE);
+
+
                 radio_building.setChecked(true);
                 radio_earth.setEnabled(false);
                 radio_filla.setEnabled(false);
-                info_lay.setVisibility(View.VISIBLE);
-                types_lay.setVisibility(View.GONE);
+
                 seekBarList.add(nb_bath);
                 seekBarList.add(nb_room);
                 seekBarList.add(nb_bulding);
@@ -481,12 +497,17 @@ String Govern_key=null;
                 break;
 
             case 1:
+                earth_lay.setVisibility(View.VISIBLE);
+                types_lay.setVisibility(View.VISIBLE);
+                info_lay.setVisibility(View.VISIBLE);
+                info1.setVisibility(View.GONE);
+                building_lay.setVisibility(View.GONE);
+
                 radio_filla.setEnabled(false);
                 radio_building.setEnabled(false);
 
                 radio_earth.setChecked(true);
-                types_lay.setVisibility(View.VISIBLE);
-                info_lay.setVisibility(View.VISIBLE);
+
 
                 seekBarList2.add(nb_bath);
                 seekBarList2.add(nb_room);
@@ -497,6 +518,11 @@ String Govern_key=null;
                 setEnabel(seekBarList,true);
                 break;
             case 2:
+                earth_lay.setVisibility(View.VISIBLE);
+                info1.setVisibility(View.VISIBLE);
+                building_lay.setVisibility(View.VISIBLE);
+
+
                 types_lay.setVisibility(View.GONE);
                 info_lay.setVisibility(View.VISIBLE);
 
@@ -513,6 +539,8 @@ radio_filla.setChecked(true);
 
 
         }
+        locationurl.setText(real_estate.getAddress());
+        dis.setText(real_estate.getDescription());
         youtup.setText(real_estate.getYoutup());
         location_tv.setText(real_estate.getLocation().getCity());
 GetGov_mun();
@@ -673,6 +701,15 @@ GetGov_mun();
 //
 //        }
 
+        if (dis.getText().toString().isEmpty()){
+            dis.setError(dis.getHint());
+            return;
+        }
+        if (locationurl.getText().toString().isEmpty()){
+            locationurl.setError(locationurl.getHint());
+            return;
+        }
+
         Real_estate real=new Real_estate();
         real.setProfider_phone(real_estate.getProfider_phone());
         int type = 0;
@@ -706,13 +743,15 @@ String   tableName="";
             tableName="Earth";
             type=1;
         }
-
+        real.setDescription(dis.getText().toString());
+        real.setAddress(locationurl.getText().toString());
         real.setYoutup(youtup.getText().toString());
         real.setSolde(isSolde);
         real.setType(type);
         real.setEarth_type(_earth_type);
         real.setPrice(Double.parseDouble(nb_price.getText().toString()));
         real.setPrice1(Double.parseDouble(nb_price1.getText().toString()));
+        real.setLocation(new location(0.0,0.0,Governorate_sp.getText()+" / "+municipality_sp.getText()));
 
         if (mLatLng!=null){
             real.setLocation(new location(mLatLng.latitude,mLatLng.longitude,location_tv.getText().toString()));
@@ -927,22 +966,22 @@ private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(44.641969, 17.867077);
-       // mMap.addMarker(new MarkerOptions().position(sydney).title("تسليتش"));
-       // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
-        mLatLng=new LatLng(real_estate.getLocation().getLat(),real_estate.getLocation().getLng());
-        make_marke(mLatLng);
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                mLatLng=latLng;
-                make_marke(latLng);
-            }
-        });
+//        mMap = googleMap;
+//
+//        // Add a marker in Sydney and move the camera
+//        LatLng sydney = new LatLng(44.641969, 17.867077);
+//       // mMap.addMarker(new MarkerOptions().position(sydney).title("تسليتش"));
+//       // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
+//        mLatLng=new LatLng(real_estate.getLocation().getLat(),real_estate.getLocation().getLng());
+//        make_marke(mLatLng);
+//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(LatLng latLng) {
+//                mLatLng=latLng;
+//                make_marke(latLng);
+//            }
+//        });
 
     }
     private LatLng mLatLng=null;

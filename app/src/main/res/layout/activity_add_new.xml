@@ -764,12 +764,42 @@ android:visibility="gone"
                    android:textSize="14dp"
                    app:layout_constraintTop_toTopOf="parent"
                    tools:layout_editor_absoluteX="20dp" />
+               <EditText
+                   android:id="@+id/location"
+                   android:layout_width="match_parent"
+                   android:layout_height="50dp"
+                   android:background="@drawable/bk_edite_bay"
+                   android:fontFamily="@font/saudi"
+                   android:hint="@string/location"
+                   android:paddingRight="10dp"
+                   android:textColor="@color/text_grey"
+android:layout_marginTop="5dp"
+                   android:textSize="14dp"
+                   app:layout_constraintTop_toBottomOf="@+id/youtup"
+                   tools:layout_editor_absoluteX="20dp" />
+               <EditText
+                   android:id="@+id/discription"
+                   android:layout_width="match_parent"
+                   android:layout_height="200dp"
+                   android:background="@drawable/bk_edite_bay"
+                   android:fontFamily="@font/saudi"
+                   android:hint="@string/discription"
+                   android:gravity="top"
+                   android:paddingRight="10dp"
+                   android:textColor="@color/text_grey"
+                   android:layout_marginTop="5dp"
+android:padding="5dp"
+                   android:inputType="textMultiLine"
+                   android:textSize="14dp"
+                   app:layout_constraintTop_toBottomOf="@+id/location"
+                   tools:layout_editor_absoluteX="20dp" />
                <TextView
+                   android:visibility="gone"
                    android:layout_marginTop="5dp"
                    android:id="@+id/city"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                  app:layout_constraintTop_toBottomOf="@+id/youtup"
+                  app:layout_constraintTop_toBottomOf="@+id/discription"
                    android:fontFamily="@font/saudi"
               android:gravity="left"
                    android:drawableLeft="@drawable/ic_location"
@@ -780,30 +810,32 @@ android:visibility="gone"
                    android:textSize="14dp"
 
                   />
-               <fragment
-                   android:layout_marginTop="10dp"
+<!--               <fragment-->
+<!--                   android:layout_marginTop="10dp"-->
+<!--                   android:visibility="gone"-->
 
-                   app:layout_constraintTop_toBottomOf="@+id/city"
-                   android:background="@drawable/bk_type_btn"
-                   android:padding="3dp"
-                   xmlns:android="http://schemas.android.com/apk/res/android"
-                   xmlns:tools="http://schemas.android.com/tools"
-                   android:name="com.google.android.gms.maps.SupportMapFragment"
+<!--                   app:layout_constraintTop_toBottomOf="@+id/city"-->
+<!--                   android:background="@drawable/bk_type_btn"-->
+<!--                   android:padding="3dp"-->
+<!--                   xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                   xmlns:tools="http://schemas.android.com/tools"-->
+<!--                   android:name="com.google.android.gms.maps.SupportMapFragment"-->
 
 
-                   android:layout_width="match_parent"
-                   android:layout_height="500dp"
+<!--                   android:layout_width="match_parent"-->
+<!--                   android:layout_height="500dp"-->
 
-                   android:id="@+id/map"
+<!--                   android:id="@+id/map"-->
 
-                   />
+<!--                   />-->
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    app:layout_constraintBottom_toBottomOf="@id/map"
+    app:layout_constraintBottom_toBottomOf="@id/city"
     android:id="@+id/zoom"
     android:layout_marginTop="10dp"
+    android:visibility="gone"
 
     android:paddingLeft="50dp"
     android:paddingRight="50dp"
@@ -841,17 +873,19 @@ android:visibility="gone"
 </LinearLayout>
 
                <TextView
-                   android:layout_marginTop="10dp"
-                  app:layout_constraintTop_toBottomOf="@+id/zoom"
+                   android:id="@+id/t1"
                    android:layout_width="match_parent"
-                android:gravity="center"
-
                    android:layout_height="wrap_content"
+                   android:layout_marginTop="8dp"
+                   android:visibility="gone"
+
+                   android:fontFamily="@font/saudi"
+                   android:gravity="center"
                    android:text="@string/map"
                    android:textColor="@color/text_grey"
-                   android:fontFamily="@font/saudi"
                    android:textSize="14dp"
-                   android:id="@+id/t1"/>
+                   app:layout_constraintTop_toBottomOf="@+id/zoom"
+                   tools:layout_editor_absoluteX="10dp" />
 
                <LinearLayout
 

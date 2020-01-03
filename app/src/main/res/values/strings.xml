@@ -45,4 +45,8 @@
     <string name="delete">حذف</string>
     <string name="email">البريد الالكتروني</string>
     <string name="address">العنوان</string>
+    <string name="discription">تفاصيل العقار</string>
+    <string name="location">إنسخ رابط موقع العقار على الخريطة</string>
+    <string name="placeinMap">المكان على الخريطة</string>
+    <string name="liken">عقارات مشابهة</string>
 </resources>

@@ -184,7 +184,7 @@ android:layout_marginRight="10dp"
                 android:orientation="vertical">
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="170dp"
                     android:layout_marginBottom="20dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
@@ -413,11 +413,24 @@ app:layout_constraintTop_toBottomOf="@+id/bottom1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:id="@+id/place"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        android:text="@string/place"
+                        android:text="@string/placeinMap"
                         android:fontFamily="@font/saudi"
                         android:textSize="14dp"
                         android:drawableLeft="@drawable/ic_location"
-                        android:textColor="@color/text_grey"
+                        android:textColor="@color/bk_red"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:id="@+id/discription"
+
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:text="@string/discription"
+                        android:fontFamily="@font/saudi"
+                        android:textSize="14dp"
+
+                        android:textColor="@color/bk_blue"
                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -426,28 +439,57 @@ app:layout_constraintTop_toBottomOf="@+id/bottom1"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     >
-                    <fragment
-                        android:layout_marginTop="10dp"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/discription_txt"
+android:visibility="gone"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:text="@string/discription"
+                        android:fontFamily="@font/saudi"
+                        android:textSize="14dp"
 
-                        app:layout_constraintTop_toBottomOf="@+id/city"
-                        android:background="@drawable/bk_type_btn"
-                        android:padding="3dp"
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:tools="http://schemas.android.com/tools"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:textColor="@color/text_grey"
+                        />
+<!--                    <fragment-->
+<!--                        android:layout_marginTop="10dp"-->
+
+<!--                        app:layout_constraintTop_toBottomOf="@+id/city"-->
+<!--                        android:background="@drawable/bk_type_btn"-->
+<!--                        android:padding="3dp"-->
+<!--                        xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                        xmlns:tools="http://schemas.android.com/tools"-->
+<!--                        android:name="com.google.android.gms.maps.SupportMapFragment"-->
 
 
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp"
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="250dp"-->
+<!--                        android:visibility="gone"-->
 
-                        android:id="@+id/map"
+<!--                        android:id="@+id/map"-->
 
+<!--                        />-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/discription_txt"
+                        android:id="@+id/t1"
+                       android:layout_marginTop="10dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:text="@string/liken"
+                        android:fontFamily="@font/saudi"
+                        android:textSize="14dp"
+
+                        android:textColor="@color/text_grey"
                         />
                     <LinearLayout
+                        app:layout_goneMarginTop="10dp"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintBottom_toBottomOf="@id/map"
+                        app:layout_constraintBottom_toBottomOf="@id/t1"
                         android:id="@+id/zoom"
 
                       android:paddingLeft="50dp"
@@ -487,13 +529,13 @@ app:layout_constraintTop_toBottomOf="@+id/bottom1"
                     </LinearLayout>
 
                     <LinearLayout
-
+                        android:id="@+id/contact"
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layoutDirection="rtl"
-                        app:layout_constraintTop_toBottomOf="@+id/zoom"
+                        app:layout_constraintTop_toBottomOf="@+id/RV"
                         android:paddingBottom="30dp"
                         android:weightSum="2">
                         <Button
@@ -527,6 +569,16 @@ app:layout_constraintTop_toBottomOf="@+id/bottom1"
                             android:drawableRight="@drawable/ic_whatsapp"
                             android:id="@+id/whatup_contacte"/>
                     </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/t1"
+                        android:id="@+id/RV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/row_item_fila"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        />
                     <ImageView
                         android:id="@+id/is_solde"
                         android:visibility="gone"
@@ -537,6 +589,7 @@ app:layout_constraintTop_toBottomOf="@+id/bottom1"
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:src="@drawable/sold"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

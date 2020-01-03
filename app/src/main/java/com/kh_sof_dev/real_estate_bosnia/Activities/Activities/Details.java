@@ -1,7 +1,10 @@
 package com.kh_sof_dev.real_estate_bosnia.Activities.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -18,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +40,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,11 +48,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.appartement_adapter;
+import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.earth_adapter;
+import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.filla_adapter;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Real_estate;
 import com.kh_sof_dev.real_estate_bosnia.R;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicMarkableReference;
 
@@ -61,6 +71,7 @@ public static Real_estate real_estate;
         init();
        Getdata();
     }
+    String tableName="";
 private void MyRealEstate(){
     solde_check.setVisibility(View.GONE);
         FirebaseDatabase database=FirebaseDatabase.getInstance();
@@ -90,6 +101,7 @@ private void MyRealEstate(){
 }
     private void Getdata() {
         MyRealEstate();
+
         if (isAdmin()){
             edit.setVisibility(View.VISIBLE);
             delete.setVisibility(View.VISIBLE);
@@ -104,7 +116,7 @@ private void MyRealEstate(){
                 room_lay.setVisibility(View.GONE);
                 bulding_lay.setVisibility(View.GONE);
                 bath_lay.setVisibility(View.GONE);
-
+                tableName="Earth";
                 type.setVisibility(View.VISIBLE);
                 if (real_estate.getEarth_type()==1){
                     type.setText(getString(R.string.type1));
@@ -116,6 +128,7 @@ private void MyRealEstate(){
                 earth_nb.setText(real_estate.getEarth().toString());
             }
             if (real_estate.getType()==2){
+                tableName="Fella";
                room_nb.setText(real_estate.getRoom()+"");
                bath_nb.setText(real_estate.getBath()+"");
                bulding_nb.setText(real_estate.getBuilding().toString());
@@ -123,6 +136,7 @@ private void MyRealEstate(){
                 earth_nb.setText(real_estate.getEarth().toString());
             }
             if (real_estate.getType()==3){
+                tableName="Apartment";
                 earth_lay.setVisibility(View.GONE);
 
 
@@ -132,13 +146,15 @@ private void MyRealEstate(){
 
 
             }
+
+            dis_txt.setText(real_estate.getDescription());
             nb.setText(real_estate.getNb()+"");
             price.setText(real_estate.getPrice().toString()+" €");
             place.setText(real_estate.getLocation().getCity());
             solde_check.setChecked(real_estate.getSolde());
             solde_check.setOnCheckedChangeListener(this);
             ////images
-
+            Liken_realestate();
 
         for(String name : real_estate.getImagesURL()){
             TextSliderView textSliderView = new TextSliderView(this);
@@ -163,6 +179,88 @@ private void MyRealEstate(){
         mDemoSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.app_indicator2));
         }
     }
+List<Real_estate> real_estateList;
+    filla_adapter filla_adapter;
+    earth_adapter  earth_adapter;
+    appartement_adapter appartement_adapter;
+    private void Liken_realestate() {
+        real_estateList=new ArrayList<>();
+        RV.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,true));
+
+
+        switch(real_estate.getType()){
+            case 1:
+                  earth_adapter=new earth_adapter(this,real_estateList);
+                RV.setAdapter(earth_adapter);
+                break;
+                case 2:
+                 filla_adapter=new filla_adapter(this,real_estateList);
+                RV.setAdapter(filla_adapter);
+                break;  case 3:
+                 appartement_adapter=new appartement_adapter(this,real_estateList);
+                RV.setAdapter(appartement_adapter);
+                break;
+        }
+
+FirebaseDatabase database=FirebaseDatabase.getInstance();
+DatabaseReference  myRef = database.getReference()
+        .child("Governorate")
+        .child(real_estate.getGovkey())
+        .child("Municipality")
+        .child(real_estate.getMunkey())
+        .child(tableName);
+myRef.addChildEventListener(new ChildEventListener() {
+    @Override
+    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        Real_estate r=dataSnapshot.getValue(Real_estate.class);
+        r.setUid(dataSnapshot.getKey());
+        if ((r.getEarth_type()==real_estate.getEarth_type() || r.getRoom()==real_estate.getRoom()||
+        r.getBath()==real_estate.getBath() || r.getBuilding()==real_estate.getBuilding() ||
+        r.getEarth()== real_estate.getEarth() )&& !r.getUid().equals(real_estate.getUid())){
+            real_estateList.add(r);
+        }
+        switch(real_estate.getType()){
+            case 1:
+                earth_adapter.notifyDataSetChanged();
+
+                break;
+            case 2:
+                filla_adapter.notifyDataSetChanged();
+
+                break;  case 3:
+                appartement_adapter.notifyDataSetChanged();
+
+                break;
+        }
+    }
+
+    @Override
+    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+    }
+
+    @Override
+    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
+});
+
+
+
+
+
+    }
+
 
     private boolean isAdmin() {
         if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+213672886642")
@@ -178,7 +276,8 @@ private void MyRealEstate(){
     private GoogleMap mMap;
     ImageView whatch_btn,is_solde;
     Button whats,type,email,zoomin,zoomout,edit,delete;
-    TextView room_nb,earth_nb,bath_nb,bulding_nb,price,place,nb;
+    TextView room_nb,earth_nb,bath_nb,bulding_nb,price,place,nb,disc,dis_txt;
+    RecyclerView RV;
     private SliderLayout mDemoSlider;
     LinearLayout room_lay,earth_lay,bath_lay,bulding_lay;
     private void  init(){
@@ -214,21 +313,28 @@ private void MyRealEstate(){
         bulding_nb=findViewById(R.id.bulding_nb);
         earth_nb=findViewById(R.id.earth_nb);
         price=findViewById(R.id.price);
-        place=findViewById(R.id.place);
 
+        place=findViewById(R.id.place);
+place.setOnClickListener(this);
         room_lay=findViewById(R.id.room_lay);
         bath_lay=findViewById(R.id.bath_lay);
         bulding_lay=findViewById(R.id.bulding_lay);
         earth_lay=findViewById(R.id.earth_lay);
+
+        disc=findViewById(R.id.discription);
+        dis_txt=findViewById(R.id.discription_txt);
+        disc.setOnClickListener(this);
+        RV=findViewById(R.id.RV);
+
 
         solde_check=findViewById(R.id.solde_check);
 
 
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
 ///Map
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
 
     }
@@ -254,6 +360,25 @@ private void MyRealEstate(){
     @Override
     public void onClick(View v) {
 switch (v.getId()){
+    case R.id.place:
+        try {
+            Uri map = Uri.parse(real_estate.getAddress());
+            //(""https://maps.app.goo.gl/7gjuNRPFo8oVPdiUA"");
+            Intent i = new Intent(Intent.ACTION_VIEW, map);
+            startActivity(i);
+        }catch (Exception e){
+            Toast.makeText(this,"للأسف هناك خطأ برابط موقع الخريطة تواصل مع صاحب العقار ليقوم بإصلاح المشكل",Toast.LENGTH_SHORT).show();
+        }
+
+
+        break;
+    case R.id.discription:
+     if (dis_txt.getVisibility()==View.VISIBLE){
+         dis_txt.setVisibility(View.GONE);
+     }else {
+         dis_txt.setVisibility(View.VISIBLE);
+     }
+        break;
     case R.id.delete_btn:
         Delete_Real();
         break;
@@ -387,13 +512,13 @@ String url="https://www.youtube.com/user/craterco";
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng location = new LatLng(real_estate.getLocation().getLat(), real_estate.getLocation().getLng());
-         mMap.addMarker(new MarkerOptions().position(location).title(real_estate.getLocation().getCity()));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
-//
+//        mMap = googleMap;
+//        mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
+//        // Add a marker in Sydney and move the camera
+//        LatLng location = new LatLng(real_estate.getLocation().getLat(), real_estate.getLocation().getLng());
+//         mMap.addMarker(new MarkerOptions().position(location).title(real_estate.getLocation().getCity()));
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
+////
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Real_estate {
     private int nb,room,bath;
-    private String img1,img2,img3,youtup,uid,address,govkey,munkey;
+    private String img1,img2,img3,youtup,uid,address,govkey,munkey,description="";
     private Double price=0.0,price1=0.0,building,earth;
 private location location;
 private  int type=1,earth_type=1;
@@ -22,6 +22,14 @@ private List<String> imagesURL=new ArrayList<>();
 
     public Real_estate() {
 
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Double getPrice1() {

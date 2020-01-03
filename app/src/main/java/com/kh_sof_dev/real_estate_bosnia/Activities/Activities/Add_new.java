@@ -156,6 +156,8 @@ ImageView back_btn;
 LinearLayout types_lay,info1,earth_lay,building_lay,info_lay;
     CheckBox solde;
     Button   Governorate_sp,municipality_sp,zomin,zomout;
+
+    EditText dis,locationurl;
     private void init() {
         seek_bath=findViewById(R.id.seek_bar_bath);
         seek_room=findViewById(R.id.seek_bar_room);
@@ -179,6 +181,8 @@ LinearLayout types_lay,info1,earth_lay,building_lay,info_lay;
         radio_filla=findViewById(R.id.filla);
         radio_building=findViewById(R.id.appartement);
 
+        dis=findViewById(R.id.discription);
+        locationurl=findViewById(R.id.location);
 
         radio_building.setOnClickListener(this);
         radio_filla.setOnClickListener(this);
@@ -235,9 +239,9 @@ LinearLayout types_lay,info1,earth_lay,building_lay,info_lay;
         back_btn=findViewById(R.id.back_btn);
         back_btn.setOnClickListener(this);
 ///Map
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
         // Spinner
         Governorate_sp=findViewById(R.id.governomo_sp);
@@ -562,6 +566,7 @@ String Govern_key=null;
                 info_lay.setVisibility(View.VISIBLE);
                 info1.setVisibility(View.GONE);
                 building_lay.setVisibility(View.GONE);
+
                 seekBarList2.add(nb_bath);
                 seekBarList2.add(nb_room);
                 seekBarList2.add(nb_bulding);
@@ -605,6 +610,15 @@ FirebaseDatabase database;
             Toast.makeText(this,"لم تختار البلدية بعد",Toast.LENGTH_LONG).show();
             return;
         }
+
+        if (dis.getText().toString().isEmpty()){
+            dis.setError(dis.getHint());
+            return;
+        }
+        if (locationurl.getText().toString().isEmpty()){
+            locationurl.setError(locationurl.getHint());
+            return;
+        }
         FirebaseAuth auth=FirebaseAuth.getInstance();
         Real_estate real=new Real_estate();
         if (auth.getCurrentUser()!=null){
@@ -644,13 +658,16 @@ String   tableName="";
             tableName="Earth";
             type=1;
         }
-
+real.setDescription(dis.getText().toString());
+        real.setAddress(locationurl.getText().toString());
         real.setYoutup(youtup.getText().toString());
         real.setSolde(isSolde);
         real.setType(type);
         real.setEarth_type(_earth_type);
         real.setPrice(Double.parseDouble(nb_price.getText().toString()));
         real.setPrice1(Double.parseDouble(nb_price1.getText().toString()));
+
+        real.setLocation(new location(0.0,0.0,Governorate_sp.getText()+" / "+municipality_sp.getText()));
         if (mLatLng!=null){
             real.setLocation(new location(mLatLng.latitude,mLatLng.longitude,location_tv.getText().toString()));
         }
@@ -837,20 +854,20 @@ private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(44.641969, 17.867077);
-       // mMap.addMarker(new MarkerOptions().position(sydney).title("تسليتش"));
-       // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                mLatLng=latLng;
-                make_marke(latLng);
-            }
-        });
+//        mMap = googleMap;
+//        mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
+//        // Add a marker in Sydney and move the camera
+//        LatLng sydney = new LatLng(44.641969, 17.867077);
+//       // mMap.addMarker(new MarkerOptions().position(sydney).title("تسليتش"));
+//       // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
+//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(LatLng latLng) {
+//                mLatLng=latLng;
+//                make_marke(latLng);
+//            }
+//        });
 
     }
     private LatLng mLatLng=null;
