@@ -2,6 +2,8 @@ package com.kh_sof_dev.real_estate_bosnia.Activities.Fragments;
 
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +43,7 @@ import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.FetchData;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Real_estate;
 import com.kh_sof_dev.real_estate_bosnia.R;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +64,10 @@ public class earth extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_earth, container, false);
         init(view);
-        FetchAllData(null,null);
-        MainActivity.mLisstenner=new MainActivity.onsleactGoverment() {
+
+        FetchAllData(MainActivity.Govern_key,MainActivity.Mun_key);
+
+        MainActivity.mLisstenner_earth=new MainActivity.onsleactGoverment() {
             @Override
             public void onselectItem(String gov, String mun) {
                 FetchAllData(gov,mun);
@@ -74,7 +80,9 @@ public class earth extends Fragment implements View.OnClickListener {
                 for (MainActivity.items i:items_
                      ) {
                     switch (i.name){
-
+                        case "p":
+                            real_estateList_filter=filter(i.value1,i.value2,"price",real_estateList_filter);
+                            break;
                         case "e":
                             real_estateList_filter=filter(i.value1,i.value2,"earth",real_estateList_filter);
                             break;
@@ -109,12 +117,72 @@ earth_adapter adapter;
         real_estateList=new ArrayList<>();
         adapter=new earth_adapter(getContext(),real_estateList);
         RV.setAdapter(adapter);
+
+        progressBar.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(real_estateList.size()==0){
+                    progressBar.setVisibility(View.GONE);
+                    noitem.setVisibility(View.VISIBLE);
+                }
+
+
+            }
+        }, 50000);
         if (gov==null){
             GetAll();
         }else if (gov!=null && mun !=null){
             GetBay(gov,mun);
+        }  else if (gov!=null && mun ==null){
+            GetAllMun(gov);
         }
 
+    }
+    private void GetAllMun(final String gov){
+
+        FirebaseDatabase database=FirebaseDatabase.getInstance();
+        DatabaseReference mRef=database.getReference("Governorate").child(gov).child("Municipality");
+        mRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                for (DataSnapshot dts: dataSnapshot.child("Earth").getChildren()
+                ) {
+                    Real_estate real_estate=dts.getValue(Real_estate.class);
+                    real_estate.setUid(dts.getKey());
+                    real_estate.setGovkey(gov);
+                    real_estate.setMunkey(dataSnapshot.getKey());
+                    real_estateList.add(real_estate);
+                    adapter.notifyDataSetChanged();
+
+                    progressBar.setVisibility(View.GONE);
+                    noitem.setVisibility(View.GONE);
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
     private void GetBay(final String gov, final String mun){
         FirebaseDatabase database=FirebaseDatabase.getInstance();
@@ -211,10 +279,11 @@ earth_adapter adapter;
             }
         }
         if (mlist.size()==0){
-            return real_estateList;
-        }else {
-            return mlist;
+            noitem.setVisibility(View.VISIBLE);
         }
+        return mlist;
+
+//        }
     }
     private  List<Real_estate> filter(Double v1,Double v2,String cod, List<Real_estate> real_estateList){
         List<Real_estate> mlist=new ArrayList<>();
@@ -255,18 +324,22 @@ earth_adapter adapter;
             case "price":
                 for (Real_estate r:real_estateList
                 ) {
-                    if (r.getPrice1()<= v2 && r.getPrice()>= v1){
+                    if (r.getPrice()<= v2 && r.getPrice()>= v1){
                         mlist.add(r);
                     }
                 }
                 break;
         }
-        Toast.makeText(getContext(),mlist.size()+"   size  ",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(),mlist.size()+"   size  ",Toast.LENGTH_SHORT).show();
         if (mlist.size()==0){
-            return real_estateList;
-        }else {
-            return mlist;
+            noitem.setVisibility(View.VISIBLE);
         }
+        return mlist;
+
+//
+//        else {
+//            return mlist;
+//        }
     }
 
     ////////////////////////init////////////////
@@ -275,8 +348,13 @@ earth_adapter adapter;
     RecyclerView RV;
     ProgressBar progressBar;
     TextView noitem;
+    Button email,whats;
     private void init(View view) {
+        email=view.findViewById(R.id.email_contacte);
+        whats=view.findViewById(R.id.whatup_contacte);
 
+        email.setOnClickListener(this);
+        whats.setOnClickListener(this);
 
         FloatingActionButton fab=view.findViewById(R.id.fab);
 
@@ -300,23 +378,61 @@ noitem=view.findViewById(R.id.noItem);
         RV.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
     }
 
+    private void openWhatsApp(String numero,String mensaje){
+
+        try{
+            PackageManager packageManager =getActivity().getPackageManager();
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            String url = "https://api.whatsapp.com/send?phone="+ numero +"&text=" + URLEncoder.encode(mensaje, "UTF-8");
+//            String url="https://chat.whatsapp.com/HRDgK1vOui361nWu3H9u9f";
+
+            i.setPackage("com.whatsapp");
+            i.setData(Uri.parse(url));
+            if (i.resolveActivity(packageManager) != null) {
+                getActivity().startActivity(i);
+            }else {
+                Toast.makeText(getActivity(), getActivity().getString(R.string.no_whatsapp), Toast.LENGTH_SHORT);
+            }
+        } catch(Exception e) {
+            Log.e("ERROR WHATSAPP",e.toString());
+            Toast.makeText(getActivity(), getActivity().getString(R.string.no_whatsapp), Toast.LENGTH_SHORT);
+        }
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+
+            case R.id.whatup_contacte:
+                openWhatsApp("+38761505555","مرحبا اريد الاستفسار حول  العقارات البوسنة ( التطبيق )");//
+
+                break;
+            case R.id.email_contacte:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/html");
+                String[] TO ={"Bosnia545@gmail.com"};
+                // {"Bosnia545@gmail.com"};
+                intent.putExtra(Intent.EXTRA_EMAIL,TO );//"Bosnia545@gmail.com");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "استفسار");
+                intent.putExtra(Intent.EXTRA_TEXT, "مرحبا اريد الاستفسار حول  العقارات البوسنة ( التطبيق )");
+
+                getActivity().startActivity(Intent.createChooser(intent, "Send Email"));
+                break;
             case R.id.fab:
                 if(FirebaseAuth.getInstance().getCurrentUser()==null){
-                    Intent intent=new Intent(getActivity(), Login_activity.class);
-                    startActivity(intent);
+                    Intent i=new Intent(getActivity(), Login_activity.class);
+                    startActivity(i);
                 }else {
-                    Intent intent=new Intent(getActivity(), Add_new.class);
-                    startActivity(intent);
+                    Intent i=new Intent(getActivity(), Add_new.class);
+                    startActivity(i);
                 }
+
                 break;
 
 
         }}
-
 
 
 

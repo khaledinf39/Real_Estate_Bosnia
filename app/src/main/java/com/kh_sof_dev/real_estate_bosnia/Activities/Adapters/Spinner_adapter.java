@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate;
@@ -31,7 +32,7 @@ public class Spinner_adapter extends ArrayAdapter<Governorate> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Governorate rowItem = getItem(position);
+        final Governorate rowItem = getItem(position);
 
         View rowview = flater.inflate(R.layout.spinnerlistitems_layout,null,true);
 

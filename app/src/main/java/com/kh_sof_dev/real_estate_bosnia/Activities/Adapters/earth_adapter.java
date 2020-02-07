@@ -2,6 +2,8 @@ package com.kh_sof_dev.real_estate_bosnia.Activities.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +22,7 @@ import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Real_estate;
 import com.kh_sof_dev.real_estate_bosnia.R;
 import com.squareup.picasso.Picasso;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 public class earth_adapter extends RecyclerView.Adapter<earth_adapter.ViewHolder> {
@@ -84,6 +88,8 @@ if (mItems.get(position).getEarth_type()==1){
                 mContext.startActivity(new Intent(mContext,Details.class));
             }
         });
+
+
     }
 
 

@@ -24,6 +24,8 @@
     <string name="price">السعر</string>
     <string name="email_contacte">تواصل معنا عبرى الإيمايل</string>
     <string name="whatup_contacte">تواصل معنا عبرى الواتساب</string>
+    <string name="email_"> عبرى الإيمايل</string>
+    <string name="whatup">عبرى الواتساب</string>
     <string name="appartment">شقة</string>
     <string name="filla">فلة</string>
     <string name="earth_check">أرض</string>
@@ -49,4 +51,6 @@
     <string name="location">إنسخ رابط موقع العقار على الخريطة</string>
     <string name="placeinMap">المكان على الخريطة</string>
     <string name="liken">عقارات مشابهة</string>
+    <string name="contact">تواصل مع الإدارة</string>
+    <string name="all">الكل</string>
 </resources>

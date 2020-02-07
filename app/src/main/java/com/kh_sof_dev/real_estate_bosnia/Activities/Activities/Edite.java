@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -60,6 +61,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.Gover_adapter;
+import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.Imag_adapter;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Real_estate;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.ResizePickedImage;
@@ -90,7 +92,7 @@ public class Edite extends AppCompatActivity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new);
+        setContentView(R.layout.activity_edite);
         init();
         GetData();
 
@@ -124,18 +126,19 @@ int RealNB=100;
     EditText nb_bath,nb_price,nb_room,nb_bulding,nb_earth,nb_price1;
           TextView  location_tv;
     RadioButton radio_building,radio_filla,radio_earth;
-    Button type1,type2,save,img1,img2,img3;
+    Button type1,type2,save;
     EditText youtup;
 ImageView back_btn;
-    HorizontalScrollView imgs;
+
     LinearLayout types_lay,info1,earth_lay,building_lay,info_lay;
     CheckBox solde;
-    Button   Governorate_sp,municipality_sp,zomin,zomout;
+    Button   Governorate_sp,municipality_sp,zomin,zomout,take_img;
     EditText dis,locationurl;
+    RecyclerView RV_img;
     private void init() {
         dis=findViewById(R.id.discription);
         locationurl=findViewById(R.id.location);
-
+RV_img=findViewById(R.id.RV);
         seek_bath=findViewById(R.id.seek_bar_bath);
         seek_room=findViewById(R.id.seek_bar_room);
         seek_price=findViewById(R.id.seek_bar_price);
@@ -147,11 +150,16 @@ ImageView back_btn;
         seek_price.setOnSeekBarChangeListener(this);
         seek_room.setOnSeekBarChangeListener(this);
 
+
+        take_img=findViewById(R.id.take_img);
+        take_img.setOnClickListener(this);
+
+
         nb_bath=findViewById(R.id.bath_nb);
         nb_room=findViewById(R.id.room_nb);
         nb_bulding=findViewById(R.id.bulding_nb);
         nb_price=findViewById(R.id.price_nb);
-        nb_price1=findViewById(R.id.price_nb1);
+        nb_price1=findViewById(R.id.price_nb);
         nb_earth=findViewById(R.id.earth_nb);
 
         radio_earth=findViewById(R.id.earth);
@@ -166,20 +174,14 @@ ImageView back_btn;
         //button
         type1=findViewById(R.id.type1);
         type2=findViewById(R.id.type2);
-        img1=findViewById(R.id.take_img1);
-        img2=findViewById(R.id.take_img2);
-        img3=findViewById(R.id.take_img3);
+
         save=findViewById(R.id.save);
 
-        imgs=findViewById(R.id.imgs);
-        imgs.setVisibility(View.GONE);
 
 
         type1.setOnClickListener(this);
         type2.setOnClickListener(this);
-        img1.setOnClickListener(this);
-        img2.setOnClickListener(this);
-        img3.setOnClickListener(this);
+
         save.setOnClickListener(this);
 
         youtup=findViewById(R.id.youtup);
@@ -242,7 +244,12 @@ String Govern_key=null;
                 Governorate_sp.setText(governorate.getName());
                 mypopupWindow_gov.dismiss();
             }
-        });
+
+           @Override
+           public void onEdite(com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
+
+           }
+       });
         RecyclerView RV=view1.findViewById(R.id.RV);
         RV.setLayoutManager(new LinearLayoutManager(Edite.this,LinearLayoutManager.VERTICAL,false));
         RV.setAdapter(adapter);
@@ -335,6 +342,11 @@ String Govern_key=null;
                 municipality_sp.setText(governorate.getName());
                 mypopupWindow_mun.dismiss();
             }
+
+            @Override
+            public void onEdite(com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
+
+            }
         });
         RecyclerView RV=view1.findViewById(R.id.RV);
         RV.setLayoutManager(new LinearLayoutManager(Edite.this,LinearLayoutManager.VERTICAL,false));
@@ -417,6 +429,7 @@ String Govern_key=null;
 
     }
     int _earth_type=1;
+    int img=1;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
@@ -429,15 +442,22 @@ String Govern_key=null;
                 change_selector(type2,type1);
                 _earth_type=2;
                 break;
-            case R.id.take_img1:
-                imageBrowse(1);
+            case R.id.take_img:
+                img=real_estate.getImagesURL().size();
+                if ((img+1)>10){
+                    Toast.makeText(Edite.this,
+                            " عدد الصور لا يمكن تن يتجاوز ال 10  ..!"
+                            , Toast.LENGTH_LONG).show();
+                    return;
+                }
+                imageBrowse(img+1);
                 break;
-            case R.id.take_img2:
-                imageBrowse(2);
-                break;
-            case R.id.take_img3:
-                imageBrowse(3);
-                break;
+//            case R.id.take_img2:
+//                imageBrowse(2);
+//                break;
+//            case R.id.take_img3:
+//                imageBrowse(3);
+//                break;
             case R.id.save:
                 save_info();
                 break;
@@ -468,6 +488,8 @@ String Govern_key=null;
 
 
     }
+
+    Imag_adapter adapter;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void GetData( ){
         real_estate=Details.real_estate;
@@ -539,6 +561,9 @@ radio_filla.setChecked(true);
 
 
         }
+
+        img=real_estate.getImagesURL().size();
+
         locationurl.setText(real_estate.getAddress());
         dis.setText(real_estate.getDescription());
         youtup.setText(real_estate.getYoutup());
@@ -550,18 +575,18 @@ GetGov_mun();
 
         double data = real_estate.getBuilding();
         int value = (int)data;
-        seek_bath.setProgress(real_estate.getBath());
+        nb_bath.setText(real_estate.getBath()+"");
 
-        seek_room.setProgress(real_estate.getRoom());
-        seek_bulding.setProgress(value);
+        nb_room.setText(real_estate.getRoom()+"");
+        nb_bulding.setText(value+"");
 
         double data1 = real_estate.getEarth();
         int value1 = (int)data1;
-        seek_earth.setProgress(value1);
+        nb_earth.setText(value1+"");
 
         double data2 = real_estate.getPrice();
         int value2 = (int)data2;
-        seek_price.setProgress(value2);
+        nb_price.setText(value2+"");
 
 
         switch (real_estate.getEarth_type()) {
@@ -574,6 +599,43 @@ GetGov_mun();
                 _earth_type = 2;
                 break;
         }
+
+       adapter=new Imag_adapter(this, real_estate.getImagesURL(), new Imag_adapter.Onselected() {
+            @Override
+            public void onitemselect(int potions) {
+                FirebaseDatabase database=FirebaseDatabase.getInstance();
+                DatabaseReference ref = null;
+                if (real_estate.getType()==1){
+                    ref= database.getReference()
+                            .child("Governorate")
+                            .child(real_estate.getGovkey())
+                            .child("Municipality")
+                            .child(real_estate.getMunkey())
+                            .child("Earth");
+                }
+                if (real_estate.getType()==2){
+                    ref= database.getReference()
+                            .child("Governorate")
+                            .child(real_estate.getGovkey())
+                            .child("Municipality")
+                            .child(real_estate.getMunkey())
+                            .child("Fella");
+                }
+                if (real_estate.getType()==3){
+                    ref= database.getReference()
+                            .child("Governorate")
+                            .child(real_estate.getGovkey())
+                            .child("Municipality")
+                            .child(real_estate.getMunkey())
+                            .child("Apartment");
+                }
+
+                ref.child(real_estate.getUid()).child("imagesURL").child(potions+"").removeValue();
+            }
+        });
+        RV_img.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        RV_img.setAdapter(adapter);
+//
 //        String compresedImagePath;
 //        try {
 //           Uri returnUri=Uri.parse(real_estate.getImagesURL().get(0));
@@ -710,7 +772,12 @@ GetGov_mun();
             return;
         }
 
-        Real_estate real=new Real_estate();
+        if (nb_price.getText().toString().isEmpty()){
+            nb_price.setError(nb_price.getHint());
+            return;
+        }
+
+        final Real_estate real=new Real_estate();
         real.setProfider_phone(real_estate.getProfider_phone());
         int type = 0;
 String   tableName="";
@@ -750,7 +817,7 @@ String   tableName="";
         real.setType(type);
         real.setEarth_type(_earth_type);
         real.setPrice(Double.parseDouble(nb_price.getText().toString()));
-        real.setPrice1(Double.parseDouble(nb_price1.getText().toString()));
+//        real.setPrice1(Double.parseDouble(nb_price1.getText().toString()));
         real.setLocation(new location(0.0,0.0,Governorate_sp.getText()+" / "+municipality_sp.getText()));
 
         if (mLatLng!=null){
@@ -778,75 +845,79 @@ String   tableName="";
         storage = FirebaseStorage.getInstance();
         final String key = real_estate.getUid();
         myRef.child(key).setValue(real);
-        Toast.makeText(Edite.this,
+
+
+
+        if (mPaths.size() != 0) {
+            final List<String> imagesURL = new ArrayList<>();
+            for (int i = 0; i < mPaths.size(); i++) {
+                System.out.println("Start upload images");
+                InputStream stream = null;
+                try {
+                    stream = new FileInputStream(new File(mPaths.get(i)));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                final String uuid = "image" + i;
+                final StorageReference ref = storage.getReference().child(tableName).child(key).child(uuid + ".jpg");
+
+                final UploadTask uploadTask = ref.putStream(stream);
+
+                uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//
+                        double progress = (-100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                        Log.d(TAG, "onProgress: " + progress);
+                        System.out.println("Upload is " + progress + "% done");
+                        dialog.setMessage(msg+"\n"+
+                                " تم تحميل  " + progress + "% ");
+
+                    }
+                });
+                final String finalTableName = tableName;
+                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        // GET THE IMAGE DOWNLOAD URL
+
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                System.out.println("uri " + uri.toString());
+//                                uploadingImagePB.setProgress(0);
+//                                progressBarLayout.setVisibility(View.GONE);
+
+                                Log.d(TAG, "onSuccess: the image uploded " + uri.toString());
+                                Map<String, Object> map = new HashMap<>();
+                                imagesURL.add(uri.toString());
+                                map.put("imagesURL", imagesURL);
+                                myRef   .child(key).updateChildren(map);
+                                /********************** finsh****************/
+                                dialog.dismiss();
+                                Toast.makeText(Edite.this,
                                         "تم تحديث معلومات العقار بنجاح  ..!"
                                         , Toast.LENGTH_LONG).show();
-       dialog.dismiss();
-       finish();
-
-//        if (mPaths.size() != 0) {
-//            final List<String> imagesURL = new ArrayList<>();
-//            for (int i = 0; i < mPaths.size(); i++) {
-//                System.out.println("Start upload images");
-//                InputStream stream = null;
-//                try {
-//                    stream = new FileInputStream(new File(mPaths.get(i)));
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//                final String uuid = "image" + i;
-//                final StorageReference ref = storage.getReference().child(tableName).child(key).child(uuid + ".jpg");
+                                dialog.dismiss();
+                                Details.real_estate.setBath(real.getBath());
+                                Details.real_estate.setBuilding(real.getBuilding());
+                                Details.real_estate.setEarth(real.getEarth());
+                                Details.real_estate.setRoom(real.getRoom());
+                                Details.real_estate.setPrice(real.getPrice());
+                                finish();
 //
-//                final UploadTask uploadTask = ref.putStream(stream);
-//
-//                uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-////
-//                        double progress = (-100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-//
-//                        Log.d(TAG, "onProgress: " + progress);
-//                        System.out.println("Upload is " + progress + "% done");
-//                        dialog.setMessage(msg+"\n"+
-//                                " تم تحميل  " + progress + "% ");
-//
-//                    }
-//                });
-//                final String finalTableName = tableName;
-//                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-//                        // GET THE IMAGE DOWNLOAD URL
-//
-//                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                            @Override
-//                            public void onSuccess(Uri uri) {
-//                                System.out.println("uri " + uri.toString());
-////                                uploadingImagePB.setProgress(0);
-////                                progressBarLayout.setVisibility(View.GONE);
-//
-//                                Log.d(TAG, "onSuccess: the image uploded " + uri.toString());
-//                                Map<String, Object> map = new HashMap<>();
-//                                imagesURL.add(uri.toString());
-//                                map.put("imagesURL", imagesURL);
-//                                myRef   .child(key).updateChildren(map);
-//                                /********************** finsh****************/
-//                                dialog.dismiss();
-//                                Toast.makeText(Edite.this,
-//                                        "تم رفع العقار بنجاح  ..!"
-//                                        , Toast.LENGTH_LONG).show();
-////
-//             DatabaseReference reference1=database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-//              reference1.child("My_Real_Estate").push().setValue(key);
-//                                System.out.println(" END OF THE ON OnSuccessListener");
-//                            }
-////                            System.out.println(" END OF THE ON OnSuccessListener");
-//                        });
-//                        System.out.println(" END OF THE ON COMPLETE");
-//                    }
-//                });
-//            }
-//        }
+             DatabaseReference reference1=database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+              reference1.child("My_Real_Estate").push().setValue(key);
+                                System.out.println(" END OF THE ON OnSuccessListener");
+                            }
+//                            System.out.println(" END OF THE ON OnSuccessListener");
+                        });
+                        System.out.println(" END OF THE ON COMPLETE");
+                    }
+                });
+            }
+        }
 
 
     }
@@ -894,62 +965,42 @@ private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE
 
 
 
-                if (requestCode == 1 || requestCode == 2 || requestCode == 3) {
-                    System.out.println("100000");
-                    Uri returnUri = data.getData();
-                    ResizePickedImage resizePickedImage = new ResizePickedImage();
-                    String realePath = resizePickedImage.getRealPathFromURI(returnUri, this);
-                    System.out.println(realePath);
-                    String compresedImagePath;
-                    Bitmap bitmapImage = null;
-                    try {
-                        Uri contentURI = data.getData();
-                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), contentURI);
-                        BitmapDrawable background = new BitmapDrawable(bitmap);
-                        if (requestCode == 1) {
 
-                            compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
-                                    (this, realePath, "image1");
-                            if (mPaths.contains(compresedImagePath)) {
-                                mPaths.remove(compresedImagePath);
-
-                            }
-                                mPaths.add(compresedImagePath);
-                                img1.setBackground(background);
+            System.out.println("100000");
+            Uri returnUri = data.getData();
+            ResizePickedImage resizePickedImage = new ResizePickedImage();
+            String realePath = resizePickedImage.getRealPathFromURI(returnUri, this);
+            System.out.println(realePath);
+            String compresedImagePath;
+            Bitmap bitmapImage = null;
+            try {
+                Uri contentURI = data.getData();
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), contentURI);
+                BitmapDrawable background = new BitmapDrawable(bitmap);
 
 
-                        } else if (requestCode == 2) {
-                            compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
-                                    (this, realePath, "image2");
-                            if (mPaths.contains(compresedImagePath)) {
-                                mPaths.remove(compresedImagePath);
-
-                            }
-                                mPaths.add(compresedImagePath);
-                                img2.setBackground(background);
-
-
-                        } else if (requestCode == 3) {
-                            compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
-                                    (getApplicationContext(), realePath, "image3");
-                            if (mPaths.contains(compresedImagePath)) {
-                                mPaths.remove(compresedImagePath);
-                            }
-                                mPaths.add(compresedImagePath);
-
-                                img3.setBackground(background);
-
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
+                compresedImagePath = resizePickedImage.resizeAndCompressImageBeforeSend
+                        (this, realePath, "image"+requestCode);
+                if (mPaths.contains(compresedImagePath)) {
+                    mPaths.remove(compresedImagePath);
 
                 }
+                mPaths.add(compresedImagePath);
+               real_estate.getImagesURL().add(contentURI.toString());
+               adapter.notifyDataSetChanged();
 
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
         }
+
+
+
+
 
     }
 

@@ -122,12 +122,15 @@ term=findViewById(R.id.term);
         email = (EditText) findViewById(R.id.email);
         address = (EditText) findViewById(R.id.address);
         user_info = (ConstraintLayout) findViewById(R.id.user_info);
-if (account_type==1){
-    user_info.setVisibility(View.GONE);
-}else {
-    user_info.setVisibility(View.VISIBLE);
 
-}
+        user_info.setVisibility(View.VISIBLE);
+//if (account_type==1){
+//    term_=true;
+//    user_info.setVisibility(View.GONE);
+//}else {
+//    user_info.setVisibility(View.VISIBLE);
+//
+//}
         mStartButton = (Button) findViewById(R.id.send_btn);
         mVerifyButton = (Button) findViewById(R.id.verfy_btn);
         mResendButton = (Button) findViewById(R.id.resend_btn);
@@ -290,10 +293,10 @@ FirebaseDatabase database=FirebaseDatabase.getInstance();
                             Map<String, Object> map= new HashMap<>();
                             map.put("email",email_);
                             map.put("address",address_);
-                            Task<Void> voidTask = reference.updateChildren(map);
-                            if (voidTask.isSuccessful()) {
+                            reference.updateChildren(map);
+
                                 startActivity(new Intent(Login_activity.this, MainActivity.class));
-                            }
+
                             // [START_EXCLUDE]
                             updateUI(STATE_SIGNIN_SUCCESS, user);
                             // [END_EXCLUDE]
@@ -448,7 +451,7 @@ FirebaseDatabase database=FirebaseDatabase.getInstance();
         switch (view.getId()) {
             case R.id.term_read:
 
-              startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://bosna1.com/public/site-usage.htm" )));//https://bosna1.com/public/site-usage.htm
+              startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://bosna1.com/ar/public/Policy2.php" )));//https://bosna1.com/public/site-usage.htm
                 break;
             case R.id.term:
 //                LoadPdfFile("term_condition");

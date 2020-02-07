@@ -69,11 +69,23 @@ public static Real_estate real_estate;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         init();
-       Getdata();
+
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Onreseame "," Details");
+        Getdata();
+    }
+
     String tableName="";
+
 private void MyRealEstate(){
     solde_check.setVisibility(View.GONE);
+    if (FirebaseAuth.getInstance().getCurrentUser()==null){
+        return;
+    }
         FirebaseDatabase database=FirebaseDatabase.getInstance();
         DatabaseReference ref=database.getReference("Users");
         ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -99,6 +111,7 @@ private void MyRealEstate(){
                 });
 
 }
+    DatabaseReference  myRef;
     private void Getdata() {
         MyRealEstate();
 
@@ -156,6 +169,8 @@ private void MyRealEstate(){
             ////images
             Liken_realestate();
 
+            mDemoSlider.removeAllSliders();
+
         for(String name : real_estate.getImagesURL()){
             TextSliderView textSliderView = new TextSliderView(this);
             // initialize a SliderLayout
@@ -169,14 +184,14 @@ private void MyRealEstate(){
             textSliderView.bundle(new Bundle());
             textSliderView.getBundle()
                     .putString("extra",name);
-
             mDemoSlider.addSlider(textSliderView);
         }
+       // Toast.makeText(getApplicationContext(),real_estate.getImagesURL().size()+"",Toast.LENGTH_SHORT).show();
         mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(4000);
-        mDemoSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.app_indicator2));
+        mDemoSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.app_indicator));
         }
     }
 List<Real_estate> real_estateList;
@@ -203,7 +218,7 @@ List<Real_estate> real_estateList;
         }
 
 FirebaseDatabase database=FirebaseDatabase.getInstance();
-DatabaseReference  myRef = database.getReference()
+  myRef = database.getReference()
         .child("Governorate")
         .child(real_estate.getGovkey())
         .child("Municipality")
@@ -217,6 +232,10 @@ myRef.addChildEventListener(new ChildEventListener() {
         if ((r.getEarth_type()==real_estate.getEarth_type() || r.getRoom()==real_estate.getRoom()||
         r.getBath()==real_estate.getBath() || r.getBuilding()==real_estate.getBuilding() ||
         r.getEarth()== real_estate.getEarth() )&& !r.getUid().equals(real_estate.getUid())){
+
+            r.setGovkey(real_estate.getGovkey());
+            r.setMunkey(real_estate.getMunkey());
+            liken_txt.setVisibility(View.VISIBLE);
             real_estateList.add(r);
         }
         switch(real_estate.getType()){
@@ -261,11 +280,18 @@ myRef.addChildEventListener(new ChildEventListener() {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        myRef.onDisconnect();
+    }
 
     private boolean isAdmin() {
-        if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+213672886642")
-         || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+971505555017")){  //
-            return true;
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+213672886642")
+                    || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+971505555017")){  //
+                return true;
+            }
         }
         return false;
     }
@@ -276,7 +302,7 @@ myRef.addChildEventListener(new ChildEventListener() {
     private GoogleMap mMap;
     ImageView whatch_btn,is_solde;
     Button whats,type,email,zoomin,zoomout,edit,delete;
-    TextView room_nb,earth_nb,bath_nb,bulding_nb,price,place,nb,disc,dis_txt;
+    TextView room_nb,earth_nb,bath_nb,bulding_nb,price,place,nb,disc,dis_txt,liken_txt;
     RecyclerView RV;
     private SliderLayout mDemoSlider;
     LinearLayout room_lay,earth_lay,bath_lay,bulding_lay;
@@ -300,6 +326,9 @@ myRef.addChildEventListener(new ChildEventListener() {
         email.setOnClickListener(this);
         zoomin=findViewById(R.id.zomin);
         zoomin.setOnClickListener(this);
+
+        liken_txt=findViewById(R.id.t1);
+        liken_txt.setVisibility(View.GONE);
 
         zoomout=findViewById(R.id.zomout);
         zoomout.setOnClickListener(this);
@@ -410,7 +439,10 @@ String url="https://www.youtube.com/user/craterco";
             startActivity(intent);
             finish();
         }
-        openWhatsApp(real_estate.getProfider_phone(),"Real estate nb="+real_estate.getNb());//+38761505555
+        else {
+            openWhatsApp(real_estate.getProfider_phone(),"Real estate nb="+real_estate.getNb()+"\n"+real_estate.getYoutup());//+38761505555
+
+        }
         break;
     case R.id.email_contacte:
         if(FirebaseAuth.getInstance().getCurrentUser()==null){
@@ -419,16 +451,23 @@ String url="https://www.youtube.com/user/craterco";
             startActivity(intent);
             finish();
         }
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/html");
-        String[] TO ={real_estate.getProfider_email()};
-                // {"Bosnia545@gmail.com"};
-        intent.putExtra(Intent.EXTRA_EMAIL,TO );//"Bosnia545@gmail.com");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Real estate nb="+real_estate.getNb());
-        intent.putExtra(Intent.EXTRA_TEXT, "مرحبا اريد الاستفسار حول هذا العقار.");
+       else {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/html");
+            String[] TO ={real_estate.getProfider_email()};
+            // {"Bosnia545@gmail.com"};
+            intent.putExtra(Intent.EXTRA_EMAIL,TO );//"Bosnia545@gmail.com");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "استفسار حول  عقارات البوسنة ( التطبيق )");
+            intent.putExtra(Intent.EXTRA_TEXT, "مرحبا اريد الاستفسار حول هذا العقار."+"\n"+
+                   "Real estate nb="+real_estate.getNb()
+                    +"\n"+real_estate.getYoutup());
 
-        startActivity(Intent.createChooser(intent, "Send Email"));
-        break;
+
+            startActivity(Intent.createChooser(intent, "Send Email"));
+
+        }
+           break;
+
     case R.id.zomin:
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         break;

@@ -2,13 +2,17 @@ package com.kh_sof_dev.real_estate_bosnia.Activities.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import org.xml.sax.Parser;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 public class filla_adapter extends RecyclerView.Adapter<filla_adapter.ViewHolder> {
@@ -64,10 +69,14 @@ public class filla_adapter extends RecyclerView.Adapter<filla_adapter.ViewHolder
         holder.earth.setText(mItems.get(position).getEarth()+" m2");
         holder.bulding.setText(mItems.get(position).getBuilding()+" m2");
         holder.place.setText(mItems.get(position).getLocation().getCity());
-        Picasso.with(mContext)
-                .load(mItems.get(position).getImagesURL().get(0))
-                .placeholder(mContext.getDrawable(R.drawable.img))
-        .into(holder.img);
+        try{
+            Picasso.with(mContext)
+                    .load(mItems.get(position).getImagesURL().get(0))
+                    .placeholder(mContext.getDrawable(R.drawable.img))
+                    .into(holder.img);
+        }catch (Exception e){
+
+        }
         if (mItems.get(position).getSolde()){
             holder
                     .solde.setVisibility(View.VISIBLE);
@@ -80,8 +89,28 @@ mView.setOnClickListener(new View.OnClickListener() {
     }
 });
 
-    }
 
+
+    }
+    private void openWhatsApp(String numero,String mensaje){
+
+        try{
+            PackageManager packageManager =mContext.getPackageManager();
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            String url = "https://api.whatsapp.com/send?phone="+ numero +"&text=" + URLEncoder.encode(mensaje, "UTF-8");
+            i.setPackage("com.whatsapp");
+            i.setData(Uri.parse(url));
+            if (i.resolveActivity(packageManager) != null) {
+                mContext.startActivity(i);
+            }else {
+                Toast.makeText(mContext, mContext.getString(R.string.no_whatsapp), Toast.LENGTH_SHORT);
+            }
+        } catch(Exception e) {
+            Log.e("ERROR WHATSAPP",e.toString());
+            Toast.makeText(mContext, mContext.getString(R.string.no_whatsapp), Toast.LENGTH_SHORT);
+        }
+
+    }
 
     @Override
     public int getItemCount() {
@@ -105,6 +134,7 @@ ImageView img,solde;
             earth=itemView.findViewById(R.id.earth_nb);
             img=itemView.findViewById(R.id.img);
             solde=itemView.findViewById(R.id.is_solde);
+
 
 
 

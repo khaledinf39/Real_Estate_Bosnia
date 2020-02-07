@@ -281,7 +281,31 @@ String Govern_key=null;
                 Governorate_sp.setText(governorate.getName());
                 mypopupWindow_gov.dismiss();
             }
-        });
+
+           @Override
+           public void onEdite(final com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
+               final BottomSheetDialog dialog=new BottomSheetDialog(Add_new.this);
+               dialog.setContentView(R.layout.popup_add_new);
+               final TextView name=dialog.findViewById(R.id.name);
+               name.setText(governorate.getName());
+               LinearLayout edit_ = dialog.findViewById(R.id.add);
+               edit_.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       if (name.getText().toString().isEmpty()){
+                           name.setError(name.getHint());
+                       }
+                       FirebaseDatabase database=FirebaseDatabase.getInstance();
+                       DatabaseReference reference=database.getReference("Governorate");
+
+                       reference.child(governorate.getUid()).child("name")
+                               .setValue(name.getText().toString());
+                       dialog.dismiss();
+                   }
+               });
+               dialog.show();
+           }
+       });
         RecyclerView RV=view1.findViewById(R.id.RV);
         RV.setLayoutManager(new LinearLayoutManager(Add_new.this,LinearLayoutManager.VERTICAL,false));
         RV.setAdapter(adapter);
@@ -303,6 +327,22 @@ String Govern_key=null;
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                try {
+                    Governorate governorate=dataSnapshot.getValue(Governorate.class);
+                    governorate.setUid(dataSnapshot.getKey());
+                    for (Governorate g:mlist
+                    ) {
+                        if (g.getUid().equals(governorate.getUid()))
+                        {
+                            mlist.remove(g);
+                            mlist.add(governorate);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                }catch (Exception e){
+
+                }
 
             }
 
@@ -321,8 +361,12 @@ String Govern_key=null;
 
             }
         });
-
+        TextView all=view1.findViewById(R.id.all);
+all.setVisibility(View.GONE);
         LinearLayout add1=view1.findViewById(R.id.add);
+        if (!isAdmin()){
+            add1.setVisibility(View.GONE);
+        }
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -358,7 +402,7 @@ String Govern_key=null;
 
             }
         }, 50000);
-        return new PopupWindow(view1,200, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
+        return new PopupWindow(view1,400, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
 
 
     }
@@ -373,6 +417,31 @@ String Govern_key=null;
                 Mun_key=governorate.getUid();
                 municipality_sp.setText(governorate.getName());
                 mypopupWindow_mun.dismiss();
+            }
+
+            @Override
+            public void onEdite(final com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
+                final BottomSheetDialog dialog=new BottomSheetDialog(Add_new.this);
+                dialog.setContentView(R.layout.popup_add_new);
+                final TextView name=dialog.findViewById(R.id.name);
+                name.setText(governorate.getName());
+                LinearLayout edit_ = dialog.findViewById(R.id.add);
+                edit_.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (name.getText().toString().isEmpty()){
+                            name.setError(name.getHint());
+                        }
+                        FirebaseDatabase database=FirebaseDatabase.getInstance();
+                        DatabaseReference reference=database.getReference("Governorate")
+                                .child(Govern_key).child("Municipality");
+
+                        reference.child(governorate.getUid()).child("name")
+                                .setValue(name.getText().toString());
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
         RecyclerView RV=view1.findViewById(R.id.RV);
@@ -396,7 +465,22 @@ String Govern_key=null;
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+               try {
+                   Governorate governorate=dataSnapshot.getValue(Governorate.class);
 
+                governorate.setUid(dataSnapshot.getKey());
+                for (Governorate g:mlist
+                ) {
+                    if (g.getUid().equals(governorate.getUid()))
+                    {
+                        mlist.remove(g);
+                        mlist.add(governorate);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
             }
 
             @Override
@@ -414,8 +498,13 @@ String Govern_key=null;
 
             }
         });
+        TextView all=view1.findViewById(R.id.all);
+        all.setVisibility(View.GONE);
 
         LinearLayout add1=view1.findViewById(R.id.add);
+        if (!isAdmin()){
+            add1.setVisibility(View.GONE);
+        }
         add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -451,9 +540,18 @@ String Govern_key=null;
 
             }
         }, 50000);
-        return new PopupWindow(view1,200, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
+        return new PopupWindow(view1,400, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
 
 
+    }
+    private boolean isAdmin() {
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+213672886642")
+                    || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+971505555017")){  //
+                return true;
+            }
+        }
+        return false;
     }
     View img;
     int _earth_type=1;
@@ -521,14 +619,14 @@ String Govern_key=null;
                 finish();
                 break;
             case R.id.governomo_sp:
-                mypopupWindow_gov.showAsDropDown(v,0,0);
+                mypopupWindow_gov.showAsDropDown(municipality_sp,0,0);
                 break;
             case R.id.municipality_sp:
                 if (Govern_key==null){
                     Toast.makeText(this,"لم تختار المحافظة بعد",Toast.LENGTH_LONG).show();
                     break ;
                 }
-                mypopupWindow_mun.showAsDropDown(v,0,0);
+                mypopupWindow_mun.showAsDropDown(municipality_sp,0,0);
                 break;
 
             case R.id.zomin:
@@ -619,6 +717,12 @@ FirebaseDatabase database;
             locationurl.setError(locationurl.getHint());
             return;
         }
+
+      if (nb_price.getText().toString().isEmpty()){
+          nb_price.setError(nb_price.getHint());
+          return;
+      }
+
         FirebaseAuth auth=FirebaseAuth.getInstance();
         Real_estate real=new Real_estate();
         if (auth.getCurrentUser()!=null){
@@ -629,11 +733,16 @@ FirebaseDatabase database;
 
         int type = 0;
 String   tableName="";
+        real.setBath(0);
+        real.setRoom(0);
+        real.setBuilding(0.0);
+        real.setEarth(0.0);
+
         if (radio_building.isChecked()){
             real.setBath(Integer.parseInt(nb_bath.getText().toString()));
             real.setRoom(Integer.parseInt(nb_room.getText().toString()));
             real.setBuilding(Double.parseDouble(nb_bulding.getText().toString()));
-            real.setEarth(0.0);
+
             tableName="Apartment";
             type=3;
 
@@ -650,10 +759,8 @@ String   tableName="";
         }
 
         if (radio_earth.isChecked()){
-            real.setEarth(Double.parseDouble(nb_earth.getText().toString()));
-            real.setBath(0);
-            real.setRoom(0);
-            real.setBuilding(0.0);
+
+
             real.setEarth(Double.parseDouble(nb_earth.getText().toString()));
             tableName="Earth";
             type=1;
@@ -752,6 +859,7 @@ real.setDescription(dis.getText().toString());
 //                            System.out.println(" END OF THE ON OnSuccessListener");
                         });
                         System.out.println(" END OF THE ON COMPLETE");
+                        finish();
                     }
                 });
             }

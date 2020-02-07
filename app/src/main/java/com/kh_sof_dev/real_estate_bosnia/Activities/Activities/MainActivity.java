@@ -49,6 +49,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jaygoo.widget.OnRangeChangedListener;
 import com.jaygoo.widget.RangeSeekBar;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Adapters.Gover_adapter;
@@ -145,7 +146,7 @@ public int value3=0;
 
         void  onfiltertype(int type);
     }
-    public static onsleactGoverment mLisstenner;
+    public static onsleactGoverment mLisstenner_earth,mLisstenner_fella,mLisstenner_Appart;
     @Override
     public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
 
@@ -217,7 +218,11 @@ int type;
                 } catch (Exception e) {
                     intent1 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/khaledbinkulai1?s=08"));
                 }
-                startActivity(intent1);
+                try {
+                    startActivity(intent1);
+                } catch (Exception e) {
+                       Toast.makeText(this,"error "+e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.instagrame:
                 String urlins="https://instagram.com/bosnia_crater_realstate";
@@ -260,18 +265,26 @@ int type;
             case R.id.type1:
                 change_selector(type1,type2);
                 type=1;
-                mLisstenner.onfiltertype(type);
+                mLisstenner_earth.onfiltertype(type);
+                mLisstenner_fella.onfiltertype(type);
+                mLisstenner_Appart.onfiltertype(type);
                 break;
             case R.id.type2:
                 change_selector(type2,type1);
                 type=2;
-                mLisstenner.onfiltertype(type);
+                mLisstenner_earth.onfiltertype(type);
+                mLisstenner_fella.onfiltertype(type);
+                mLisstenner_Appart.onfiltertype(type);
                 break;
             case R.id.save:
                 List<items> items =new ArrayList<>();
-                p1=Double.parseDouble(price1.getText().toString());
-                p2=Double.parseDouble(price2.getText().toString());
-                items.add(new items("p",p1,p2));
+                try{
+                    p1=Double.parseDouble(price1.getText().toString());
+                    p2=Double.parseDouble(price2.getText().toString());
+                    items.add(new items("p",p1,p2));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                try{
                    e1=Double.parseDouble(earth1.getText().toString());
                    e2=Double.parseDouble(earth2.getText().toString());
@@ -310,18 +323,20 @@ int type;
                 }
 
                 items.add(new items("t",type));
-                mLisstenner.onfilterItem(items);
+                mLisstenner_earth.onfilterItem(items);
+                mLisstenner_fella.onfilterItem(items);
+                mLisstenner_Appart.onfilterItem(items);
                 filter.dismiss();
                 break;
             case R.id.governomo_sp:
-                mypopupWindow_gov.showAsDropDown(v,0,0);
+                mypopupWindow_gov.showAsDropDown(municipality_sp,0,0);
                 break;
             case R.id.municipality_sp:
                 if (Govern_key==null){
                     Toast.makeText(this,"لم تختار المحافظة بعد",Toast.LENGTH_LONG).show();
                     break ;
                 }
-                mypopupWindow_mun.showAsDropDown(v,0,0);
+                mypopupWindow_mun.showAsDropDown(municipality_sp,0,0);
                 break;
             case R.id.logout:
 
@@ -436,12 +451,64 @@ LinearLayout type_lay;
 
     }
     Button Governorate_sp,  municipality_sp;
+   public static String Profider_email="",Profider_address="";
+    private void getProvider_inf() {
+        if (FirebaseAuth.getInstance().getCurrentUser()==null){
+            return;
+        }
+        FirebaseDatabase database=FirebaseDatabase.getInstance();
+        DatabaseReference ref=database.getReference("Users");
+        ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            Profider_email=dataSnapshot.child("email").getValue(String.class);
+                            Profider_address=dataSnapshot.child("address").getValue(String.class);
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mLisstenner=new onsleactGoverment() {
+        Lissenner_inti();
+        getProvider_inf();
+        /****************************definitions*****************************/
+        fragmentManager = getSupportFragmentManager();
+        mViewPager = (ViewPager) findViewById(R.id.viewpage);
+        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
+//        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#56ce8b"));
+        tabLayout.setSelectedTabIndicatorHeight((int) (4 * getResources().getDisplayMetrics().density));
+        tabLayout.setTabTextColors(Color.parseColor("#504E4E"), Color.parseColor("#131313"));
+
+        tabLayout.setupWithViewPager(mViewPager);
+
+
+        ImageView menu=findViewById(R.id.menu);
+        menu.setOnClickListener(this);
+        ImageView filter=findViewById(R.id.filter);
+        filter.setOnClickListener(this);
+         Governorate_sp=findViewById(R.id.governomo_sp);
+         municipality_sp=findViewById(R.id.municipality_sp);
+        Governorate_sp.setOnClickListener(this);
+        municipality_sp.setOnClickListener(this);
+        FetchAllData();
+
+
+
+    }
+
+    private void Lissenner_inti() {
+        mLisstenner_earth=new onsleactGoverment() {
 
             @Override
             public void onselectItem(String gov, String mun) {
@@ -459,30 +526,46 @@ LinearLayout type_lay;
 
             }
         };
-        /****************************definitions*****************************/
+        mLisstenner_fella=new onsleactGoverment() {
 
-        ImageView menu=findViewById(R.id.menu);
-        menu.setOnClickListener(this);
-        ImageView filter=findViewById(R.id.filter);
-        filter.setOnClickListener(this);
-         Governorate_sp=findViewById(R.id.governomo_sp);
-         municipality_sp=findViewById(R.id.municipality_sp);
-        Governorate_sp.setOnClickListener(this);
-        municipality_sp.setOnClickListener(this);
-        FetchAllData();
-        fragmentManager = getSupportFragmentManager();
-        mViewPager = (ViewPager) findViewById(R.id.viewpage);
-        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+            @Override
+            public void onselectItem(String gov, String mun) {
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
-//        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#56ce8b"));
-        tabLayout.setSelectedTabIndicatorHeight((int) (4 * getResources().getDisplayMetrics().density));
-        tabLayout.setTabTextColors(Color.parseColor("#504E4E"), Color.parseColor("#131313"));
+            }
 
-        tabLayout.setupWithViewPager(mViewPager);
+            @Override
+            public void onfilterItem(List<items> items) {
 
+            }
+
+
+            @Override
+            public void onfiltertype(int type) {
+
+            }
+        };
+
+        mLisstenner_Appart=new onsleactGoverment() {
+
+            @Override
+            public void onselectItem(String gov, String mun) {
+
+            }
+
+            @Override
+            public void onfilterItem(List<items> items) {
+
+            }
+
+
+            @Override
+            public void onfiltertype(int type) {
+
+            }
+        };
 
     }
+
     PopupWindow mypopupWindow_gov ,mypopupWindow_mun;
     private void FetchAllData() {
 
@@ -492,32 +575,81 @@ LinearLayout type_lay;
 
 
     }
-    String Govern_key=null;
-    String Mun_key=null;
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mLisstenner_earth.onselectItem(null,null);
+        mLisstenner_fella.onselectItem(null,null);
+        mLisstenner_Appart.onselectItem(null,null);
+    }
+
+   public static String Govern_key=null;
+    public static  String Mun_key=null;
     FirebaseDatabase database;
     private PopupWindow setPopUpWindow() {
         LayoutInflater inflater = (LayoutInflater)
                 getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view1 = inflater.inflate(R.layout.spinnerlistitems_layout, null);
         final List<Governorate> mlist=new ArrayList<>();
-        final Gover_adapter adapter=new Gover_adapter(this, mlist, new Gover_adapter.Onselected() {
+        final  Gover_adapter adapter=new Gover_adapter(MainActivity.this, mlist, new Gover_adapter.Onselected() {
             @Override
             public void onitemselect(com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
-                Govern_key=governorate.getUid();
+               if (governorate==null){
+                   Govern_key=null;
+                   Governorate_sp.setText(R.string.all);
+
+               }else {
+                   Govern_key=governorate.getUid();
+                   Governorate_sp.setText(governorate.getName());
+                   mypopupWindow_mun= setPopUpWindowmun();
+
+                 //  Toast.makeText(getApplicationContext(),governorate.getName(),Toast.LENGTH_SHORT).show();
+
+               }
+
                 Mun_key=null;
+                mLisstenner_earth.onselectItem(Govern_key,Mun_key);
+                mLisstenner_fella.onselectItem(Govern_key,Mun_key);
+                mLisstenner_Appart.onselectItem(Govern_key,Mun_key);
+
                 municipality_sp.setText(R.string.um);
-                mypopupWindow_mun= setPopUpWindowmun();
-                Governorate_sp.setText(governorate.getName());
+
+
                 mypopupWindow_gov.dismiss();
+            }
+
+            @Override
+            public void onEdite(final com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
+                final BottomSheetDialog dialog=new BottomSheetDialog(MainActivity.this);
+                dialog.setContentView(R.layout.popup_add_new);
+                final TextView name=dialog.findViewById(R.id.name);
+                name.setText(governorate.getName());
+                LinearLayout edit_ = dialog.findViewById(R.id.add);
+                edit_.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (name.getText().toString().isEmpty()){
+                            name.setError(name.getHint());
+                        }
+                        FirebaseDatabase database=FirebaseDatabase.getInstance();
+                        DatabaseReference reference=database.getReference("Governorate");
+
+                        reference.child(governorate.getUid()).child("name")
+                                .setValue(name.getText().toString());
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
         RecyclerView RV=view1.findViewById(R.id.RV);
-        RV.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        RV.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));
         RV.setAdapter(adapter);
 
         final ProgressBar progressBar= view1.findViewById(R.id.progress);
         final TextView noitem= view1.findViewById(R.id.noItem);
-        database= FirebaseDatabase.getInstance();
+        database=FirebaseDatabase.getInstance();
         DatabaseReference ref=database.getReference("Governorate");
         ref.addChildEventListener(new ChildEventListener() {
             @Override
@@ -532,6 +664,24 @@ LinearLayout type_lay;
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                try {
+                    Governorate governorate=dataSnapshot.getValue(Governorate.class);
+                    governorate.setUid(dataSnapshot.getKey());
+                    for (Governorate g:mlist
+                    ) {
+                        if (g.getUid().equals(governorate.getUid()))
+                        {
+                            mlist.remove(g);
+                            mlist.add(governorate);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                }catch (Exception e){
+
+                }
+
 
             }
 
@@ -551,8 +701,55 @@ LinearLayout type_lay;
             }
         });
 
+        TextView all=view1.findViewById(R.id.all);
+        all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Govern_key=null;
+                Governorate_sp.setText(R.string.all);
+                Mun_key=null;
+                mLisstenner_earth.onselectItem(Govern_key,Mun_key);
+                mLisstenner_fella.onselectItem(Govern_key,Mun_key);
+                mLisstenner_Appart.onselectItem(Govern_key,Mun_key);
+
+                municipality_sp.setText(R.string.um);
+
+
+                mypopupWindow_gov.dismiss();
+
+
+
+            }
+        });
         LinearLayout add1=view1.findViewById(R.id.add);
-        add1.setVisibility(View.GONE);
+        if (!isAdmin()){
+            add1.setVisibility(View.GONE);
+        }
+        add1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final BottomSheetDialog dialog=new BottomSheetDialog(MainActivity.this);
+                dialog.setContentView(R.layout.popup_add_new);
+                final TextView name=dialog.findViewById(R.id.name);
+                LinearLayout add_ = dialog.findViewById(R.id.add);
+                add_.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (name.getText().toString().isEmpty()){
+                            name.setError(name.getHint());
+                        }
+                        FirebaseDatabase database=FirebaseDatabase.getInstance();
+                        DatabaseReference reference=database.getReference("Governorate");
+                        Governorate governorate=new Governorate();
+                        governorate.setName(name.getText().toString());
+                        reference.push().setValue(governorate);
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -564,26 +761,71 @@ LinearLayout type_lay;
 
             }
         }, 50000);
-        return new PopupWindow(view1,200, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
+        return new PopupWindow(view1,400, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
 
 
+    }
+    private boolean isAdmin() {
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+213672886642")
+                    || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+971505555017")){  //
+                return true;
+            }
+        }
+        return false;
     }
     private PopupWindow setPopUpWindowmun() {
         LayoutInflater inflater = (LayoutInflater)
                 getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view1 = inflater.inflate(R.layout.spinnerlistitems_layout, null);
         final List<Governorate> mlist=new ArrayList<>();
-        final  Gover_adapter adapter=new Gover_adapter(this, mlist, new Gover_adapter.Onselected() {
+        final  Gover_adapter adapter=new Gover_adapter(MainActivity.this, mlist, new Gover_adapter.Onselected() {
             @Override
             public void onitemselect(com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
-                Mun_key=governorate.getUid();
-                mLisstenner.onselectItem(Govern_key,Mun_key);
-                municipality_sp.setText(governorate.getName());
+                if (governorate==null){
+                    Mun_key=null;
+                    municipality_sp.setText(R.string.all);
+
+                }else {
+                    Mun_key=governorate.getUid();
+                    municipality_sp.setText(governorate.getName());
+
+                }
+
+                mLisstenner_earth.onselectItem(Govern_key,Mun_key);
+                mLisstenner_fella.onselectItem(Govern_key,Mun_key);
+                mLisstenner_Appart.onselectItem(Govern_key,Mun_key);
+
                 mypopupWindow_mun.dismiss();
+            }
+
+            @Override
+            public void onEdite(final com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate governorate) {
+                final BottomSheetDialog dialog=new BottomSheetDialog(MainActivity.this);
+                dialog.setContentView(R.layout.popup_add_new);
+                final TextView name=dialog.findViewById(R.id.name);
+                name.setText(governorate.getName());
+                LinearLayout edit_ = dialog.findViewById(R.id.add);
+                edit_.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (name.getText().toString().isEmpty()){
+                            name.setError(name.getHint());
+                        }
+                        FirebaseDatabase database=FirebaseDatabase.getInstance();
+                        DatabaseReference reference=database.getReference("Governorate")
+                                .child(Govern_key).child("Municipality");
+
+                        reference.child(governorate.getUid()).child("name")
+                                .setValue(name.getText().toString());
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
         RecyclerView RV=view1.findViewById(R.id.RV);
-        RV.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        RV.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));
         RV.setAdapter(adapter);
 
         final ProgressBar progressBar= view1.findViewById(R.id.progress);
@@ -603,7 +845,17 @@ LinearLayout type_lay;
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                Governorate governorate=dataSnapshot.getValue(Governorate.class);
+                governorate.setUid(dataSnapshot.getKey());
+                for (Governorate g:mlist
+                ) {
+                    if (g.getUid().equals(governorate.getUid()))
+                    {
+                        mlist.remove(g);
+                        mlist.add(governorate);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
             }
 
             @Override
@@ -622,9 +874,53 @@ LinearLayout type_lay;
             }
         });
 
-        LinearLayout add1=view1.findViewById(R.id.add);
-        add1.setVisibility(View.GONE);
+        TextView all=view1.findViewById(R.id.all);
+        all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Mun_key=null;
+                municipality_sp.setText(R.string.all);
 
+                mLisstenner_earth.onselectItem(Govern_key,Mun_key);
+                mLisstenner_fella.onselectItem(Govern_key,Mun_key);
+                mLisstenner_Appart.onselectItem(Govern_key,Mun_key);
+
+                mypopupWindow_mun.dismiss();
+
+
+
+            }
+        });
+
+
+        LinearLayout add1=view1.findViewById(R.id.add);
+        if (!isAdmin()){
+            add1.setVisibility(View.GONE);
+        }
+        add1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final BottomSheetDialog dialog=new BottomSheetDialog(MainActivity.this);
+                dialog.setContentView(R.layout.popup_add_new);
+                final TextView name=dialog.findViewById(R.id.name);
+                LinearLayout add_ = dialog.findViewById(R.id.add);
+                add_.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (name.getText().toString().isEmpty()){
+                            name.setError(name.getHint());
+                        }
+                        FirebaseDatabase database=FirebaseDatabase.getInstance();
+                        DatabaseReference reference=database.getReference("Governorate").child(Govern_key).child("Municipality");
+                        Governorate governorate=new Governorate();
+                        governorate.setName(name.getText().toString());
+                        reference.push().setValue(governorate);
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -636,7 +932,7 @@ LinearLayout type_lay;
 
             }
         }, 50000);
-        return new PopupWindow(view1,200, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
+        return new PopupWindow(view1,400, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
 
 
     }

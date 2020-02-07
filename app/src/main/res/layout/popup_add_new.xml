@@ -44,7 +44,7 @@
             android:fontFamily="@font/saudi"
             android:textSize="16dp"
             android:textColor="@color/bk_green"
-            android:text="@string/add_new"
+            android:text="@string/save"
 
 
             />

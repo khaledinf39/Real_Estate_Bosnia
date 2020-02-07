@@ -7,11 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Governorate;
 import com.kh_sof_dev.real_estate_bosnia.Activities.Classes.Real_estate;
 import com.kh_sof_dev.real_estate_bosnia.R;
@@ -31,6 +36,8 @@ public class Gover_adapter extends RecyclerView.Adapter<Gover_adapter.ViewHolder
     Onselected mlissener;
 public interface Onselected{
     void onitemselect(Governorate governorate);
+    void onEdite(Governorate governorate);
+
 }
     public Gover_adapter(Context context, List<Governorate> names,Onselected mlissener) {
         mItems = names;
@@ -59,6 +66,17 @@ public interface Onselected{
 
         }
 
+        holder.all.setVisibility(View.GONE);
+
+//        if (position==0){
+//  holder.all.setVisibility(View.VISIBLE);
+//  holder.all.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View v) {
+//          mlissener.onitemselect(null);
+//      }
+//  });
+//}
 mView.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
@@ -67,10 +85,27 @@ mView.setOnClickListener(new View.OnClickListener() {
 });
 
 
+        if (!isAdmin()){
+            holder.edite.setVisibility(View.GONE);
+        }
+        holder.edite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              mlissener.onEdite(mItems.get(position));
+            }
+        });
 
     }
 
-
+    private boolean isAdmin() {
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+213672886642")
+                    || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+971505555017")){  //
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public int getItemCount() {
         return mItems.size();
@@ -78,12 +113,13 @@ mView.setOnClickListener(new View.OnClickListener() {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView name;
+        TextView name,edite,all;
 
         public ViewHolder(View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.name);
-
+            all=itemView.findViewById(R.id.all);
+             edite=(TextView) itemView.findViewById(R.id.edit);
 
 
         }
