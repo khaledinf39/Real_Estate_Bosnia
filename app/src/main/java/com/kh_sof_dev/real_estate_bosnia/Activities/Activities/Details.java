@@ -289,7 +289,8 @@ myRef.addChildEventListener(new ChildEventListener() {
     private boolean isAdmin() {
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
             if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+213672886642")
-                    || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+971505555017")){  //
+                    || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+971505555017")
+                    || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+38761505555 ")){  //
                 return true;
             }
         }
