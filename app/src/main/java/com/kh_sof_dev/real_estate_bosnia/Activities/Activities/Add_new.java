@@ -678,7 +678,7 @@ all.setVisibility(View.GONE);
                 info1.setVisibility(View.VISIBLE);
                 building_lay.setVisibility(View.VISIBLE);
 
-                types_lay.setVisibility(View.GONE);
+                types_lay.setVisibility(View.VISIBLE);
                 info_lay.setVisibility(View.VISIBLE);
 
 

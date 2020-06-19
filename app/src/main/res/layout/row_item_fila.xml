@@ -44,6 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:paddingBottom="10dp"
         >
         <ImageView
             android:visibility="gone"
@@ -277,7 +278,19 @@ android:id="@+id/price_nb"
         android:drawableLeft="@drawable/ic_location"
         android:textColor="@color/text_grey"
         />
-
+        <Button
+            app:layout_constraintTop_toBottomOf="@+id/earth_lay"
+            android:layout_marginTop="5dp"
+android:visibility="gone"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/type"
+            android:text="@string/type2"
+            android:textColor="@color/bk_green"
+            android:fontFamily="@font/saudi"
+            android:textSize="14dp"
+            android:background="@drawable/bk_type_btn"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

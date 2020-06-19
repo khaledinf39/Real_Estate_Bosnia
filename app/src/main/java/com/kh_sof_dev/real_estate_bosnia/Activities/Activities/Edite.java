@@ -498,7 +498,7 @@ String Govern_key=null;
 
         switch (real_estate.getType()){
 
-            case 3:
+            case 3://tableName="Apartment";
                 earth_lay.setVisibility(View.GONE);
                 info_lay.setVisibility(View.VISIBLE);
                 types_lay.setVisibility(View.GONE);
@@ -518,7 +518,7 @@ String Govern_key=null;
                 setEnabel(seekBarList2,false);
                 break;
 
-            case 1:
+            case 1:// tableName="earth";
                 earth_lay.setVisibility(View.VISIBLE);
                 types_lay.setVisibility(View.VISIBLE);
                 info_lay.setVisibility(View.VISIBLE);
@@ -539,13 +539,13 @@ String Govern_key=null;
                 seekBarList.add(nb_earth);
                 setEnabel(seekBarList,true);
                 break;
-            case 2:
+            case 2://tableName="Fella";
                 earth_lay.setVisibility(View.VISIBLE);
                 info1.setVisibility(View.VISIBLE);
                 building_lay.setVisibility(View.VISIBLE);
 
 
-                types_lay.setVisibility(View.GONE);
+                types_lay.setVisibility(View.VISIBLE);
                 info_lay.setVisibility(View.VISIBLE);
 
 radio_filla.setChecked(true);
@@ -917,6 +917,9 @@ String   tableName="";
                     }
                 });
             }
+        }
+        else {
+            dialog.dismiss();
         }
 
 

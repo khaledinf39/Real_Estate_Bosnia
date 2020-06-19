@@ -88,8 +88,14 @@ mView.setOnClickListener(new View.OnClickListener() {
         mContext.startActivity(new Intent(mContext,Details.class));
     }
 });
+        holder.type.setVisibility(View.VISIBLE);
+        if (mItems.get(position).getEarth_type()==1){
+            holder.type.setText(mContext.getString(R.string.type1));
 
+        }else {
+            holder.type.setText(mContext.getString(R.string.type2));
 
+        }
 
     }
     private void openWhatsApp(String numero,String mensaje){
@@ -121,6 +127,7 @@ mView.setOnClickListener(new View.OnClickListener() {
 
         TextView id,price,price1,room,bath,earth,bulding,place;
 ImageView img,solde;
+        Button type;
         public ViewHolder(View itemView) {
             super(itemView);
             id=itemView.findViewById(R.id.nb);
@@ -128,7 +135,7 @@ ImageView img,solde;
             price=itemView.findViewById(R.id.price_nb);
             price1=itemView.findViewById(R.id.price_nb1);
             place=itemView.findViewById(R.id.place);
-
+            type=itemView.findViewById(R.id.type);
             bath=itemView.findViewById(R.id.bath_nb);
             bulding=itemView.findViewById(R.id.bulding_nb);
             earth=itemView.findViewById(R.id.earth_nb);

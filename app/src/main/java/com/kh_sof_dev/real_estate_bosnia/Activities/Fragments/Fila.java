@@ -92,7 +92,9 @@ public class Fila extends Fragment implements View.OnClickListener {
                         case "p":
                             real_estateList_filter=filter(i.value1,i.value2,"price",real_estateList_filter);
                             break;
-
+                        case "t":
+                            real_estateList_filter=filter_type(i.value3,real_estateList_filter);
+                            break;
                     }
                 }
                 adapter=new filla_adapter(getContext(),real_estateList_filter);
@@ -104,6 +106,22 @@ public class Fila extends Fragment implements View.OnClickListener {
             }
         };
         return view;
+    }
+    private  List<Real_estate> filter_type(int type, List<Real_estate> real_estateList){
+        List<Real_estate> mlist=new ArrayList<>();
+
+        for (Real_estate r:real_estateList
+        ) {
+            if (r.getEarth_type()==type){
+                mlist.add(r);
+            }
+        }
+        if (mlist.size()==0){
+            noitem.setVisibility(View.VISIBLE);
+        }
+        return mlist;
+
+//        }
     }
     private  List<Real_estate> filter(Double v1,Double v2,String cod, List<Real_estate> real_estateList){
         List<Real_estate> mlist=new ArrayList<>();

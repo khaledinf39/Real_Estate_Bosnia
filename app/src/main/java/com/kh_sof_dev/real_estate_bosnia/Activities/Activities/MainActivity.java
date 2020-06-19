@@ -409,8 +409,8 @@ LinearLayout type_lay;
         bathsb.setOnRangeChangedListener(this);
         buldingsb.setOnRangeChangedListener(this);
         pricesb.setOnRangeChangedListener(this);
-        if (pagenb==1){
-            type_lay.setVisibility(View.GONE);
+        if (pagenb==1){//filla
+            //type_lay.setVisibility(View.GONE);
 
         }
         if (pagenb==2){//earth
@@ -418,7 +418,7 @@ LinearLayout type_lay;
             bulding_lay.setVisibility(View.GONE);
             bath_lay.setVisibility(View.GONE);
         }
-        if (pagenb==0){
+        if (pagenb==0){//appartment
             type_lay.setVisibility(View.GONE);
             earth_lay.setVisibility(View.GONE);
         }

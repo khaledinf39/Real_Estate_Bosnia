@@ -141,7 +141,16 @@ private void MyRealEstate(){
                 earth_nb.setText(real_estate.getEarth().toString());
             }
             if (real_estate.getType()==2){
+
                 tableName="Fella";
+                type.setVisibility(View.VISIBLE);
+                if (real_estate.getEarth_type()==1){
+                    type.setText(getString(R.string.type1));
+
+                }else {
+                    type.setText(getString(R.string.type2));
+
+                }
                room_nb.setText(real_estate.getRoom()+"");
                bath_nb.setText(real_estate.getBath()+"");
                bulding_nb.setText(real_estate.getBuilding().toString());
@@ -290,7 +299,10 @@ myRef.addChildEventListener(new ChildEventListener() {
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
             if (FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+213672886642")
                     || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+971505555017")
-                    || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+38761505555 ")){  //
+                    || FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().equals("+38761505555")
+
+
+            ){  //
                 return true;
             }
         }
@@ -520,8 +532,13 @@ String url="https://www.youtube.com/user/craterco";
                         FirebaseStorage storage=FirebaseStorage.getInstance();
                         for (String img:real_estate.getImagesURL()
                              ) {
-                            final StorageReference refstr = storage.getReferenceFromUrl(img);
-                            refstr.delete();
+                           try {
+                               final StorageReference refstr = storage.getReferenceFromUrl(img);
+                               refstr.delete();
+
+                           } catch (Exception e) {
+                               e.printStackTrace();
+                           }
                         }
 
                         finalRef.child(real_estate.getUid()).removeValue()
